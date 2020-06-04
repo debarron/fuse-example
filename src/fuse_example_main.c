@@ -99,6 +99,21 @@ static int nf_getattr(const char *path, struct stat *stbuf) {
   return 0;
 }
 
+static int nf_read(
+  const char *path,
+  char *buf,
+  size_t size,
+  off_t offset,
+  struct fuse_file_info *fi)
+{
+  int status = 0;
+  fprintf(stdout, "NF >> Reading path: %s\n", path);
+
+  // TODO This calls ramcloud read
+
+  return status;
+}
+
 
 
 /*
@@ -150,21 +165,6 @@ int ramcloud_fuse_open(
 {
   int status = 0;
   fprintf(stdout, ">> OPEN Opening a file, path=%s\n", path);
-
-  // TODO This calls ramcloud read
-
-  return status;
-}
-
-int ramcloud_fuse_read(
-  const char *path,
-  char *buf,
-  size_t size,
-  off_t offset,
-  struct fuse_file_info *fi)
-{
-  int status = 0;
-  fprintf(stdout, ">> READ Reading a file, path=%s\n", path);
 
   // TODO This calls ramcloud read
 
@@ -408,7 +408,7 @@ int ramcloud_fuse_create(
 */
 
 static struct fuse_operations ramcloud_fuse_oper = {
-  .getattr = nf_getattr
+  .getattr = nf_getattr,
 //  .readlink = ramcloud_fuse_readlink,
 //  .mknod = ramcloud_fuse_mknod,
 //  .mkdir = ramcloud_fuse_mkdir,
@@ -422,7 +422,7 @@ static struct fuse_operations ramcloud_fuse_oper = {
 //  .truncate = ramcloud_fuse_truncate,
 //  //.utimens = ramcloud_fuse_utimens,
 //  .open = ramcloud_fuse_open,
-//  .read = ramcloud_fuse_read,
+  .read = ramcloud_fuse_read,
 //  .write = ramcloud_fuse_write,
 //  .statfs = ramcloud_fuse_statfs,
 //  .flush = ramcloud_fuse_flush,
