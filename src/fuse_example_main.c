@@ -24,7 +24,7 @@
 char stack_data [STACK_MAX][MAX_DATA];
 int stack_top = -1;
 
-// Result 1: OK
+/* Result 1: OK
 // Result 0: Error 
 int stack_push(char *data){
 
@@ -47,6 +47,7 @@ char *stack_pop(){
   stack_top--;
   return data;
 }
+*/
 
 void nf_dir_file(const char *path, char **dir, char **file){
   char *path_dir, *path_file;
