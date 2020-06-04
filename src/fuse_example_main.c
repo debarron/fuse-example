@@ -11,12 +11,97 @@
 
 #include <fuse.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <time.h>
-#include <string.h>
-#include <stdlib.h>
+#include <libgen.h>
 
+#define MAX_DATA 256
+#define STACK_MAX 256
+char stack_data [STACK_MAX][MAX_DATA];
+int stack_top = -1;
+
+// Result 1: OK
+// Result 0: Error 
+int stack_push(char *data){
+
+  if (top == STACK_MAX-1)
+    return 0;
+
+  stack_top++;
+  memset(stack_data[top], '\0', MAX_DATA);
+  memcpy(data, stack_data[top], strlen(data));
+  return 1;
+}
+
+char *stack_pop(){
+  if(top == -1)
+    return NULL;
+
+  char *data = malloc(MAX_DATA);
+  memset(data);
+  memcpy(stack_data[stack_top], data);
+  stack_top--;
+  return data;
+}
+
+void nf_dir_file(const char *path, char **dir, char **file){
+  char *path_dir, *path_file;
+
+  path_dir = dirname(path);
+  path_file = basename(path);
+
+  if(strcmp(path_dir, "/") == 0){
+    *dir = strdup(path_file);
+    *file = NULL;
+  } else{
+    *dir = strdup(&path_dir[1]);
+    *file = strdup(path_file);
+  }
+}
+
+static int nf_getattr(const char *path, struct stat *stbuf) {
+  char *dir, *file;
+  fprintf(stdout, "NF >> Accessing: %s\n", path);
+
+  memset(stbuf, 0, sizeof(struct stat));
+  nf_dir_file(path, &dir, &file);
+
+  if (file == NULL){
+    stbuf->st_mode = S_IFDIR | 0755;
+		stbuf->st_nlink = 2;
+  } else{
+    stbuf->st_mode = S_IFREG | 0444;
+		stbuf->st_nlink = 1;
+		stbuf->st_size = 100;
+  }
+
+/*
+  stbuf->st_mode   = node->vstat.st_mode;
+  stbuf->st_nlink  = node->vstat.st_nlink;
+  stbuf->st_size   = node->vstat.st_size;
+  stbuf->st_blocks = node->vstat.st_blocks;
+  stbuf->st_uid    = node->vstat.st_uid;
+  stbuf->st_gid    = node->vstat.st_gid;
+  stbuf->st_mtime  = node->vstat.st_mtime;
+  stbuf->st_atime  = node->vstat.st_atime;
+  stbuf->st_ctime  = node->vstat.st_ctime;
+
+  // Directories contain the implicit hardlink '.'
+  if(S_ISDIR(node->vstat.st_mode)) {
+    stbuf->st_nlink++;
+  }
+*/
+
+  return 0;
+}
+
+
+
+/*
 void *ramcloud_fuse_init(
   struct fuse_conn_info *conn,
   struct fuse_config *config)
@@ -320,35 +405,37 @@ int ramcloud_fuse_create(
   return status;
 }
 
+*/
+
 static struct fuse_operations ramcloud_fuse_oper = {
-  .getattr = ramcloud_fuse_getattr,
-  .readlink = ramcloud_fuse_readlink,
-  .mknod = ramcloud_fuse_mknod,
-  .mkdir = ramcloud_fuse_mkdir,
-  .unlink = ramcloud_fuse_unlink,
-  .rmdir = ramcloud_fuse_rmdir,
-  .symlink = ramcloud_fuse_symlink,
-  .rename = ramcloud_fuse_rename,
-  .link = ramcloud_fuse_link,
-  .chmod = ramcloud_fuse_chmod,
-  .chown = ramcloud_fuse_chown,
-  .truncate = ramcloud_fuse_truncate,
-  //.utimens = ramcloud_fuse_utimens,
-  .open = ramcloud_fuse_open,
-  .read = ramcloud_fuse_read,
-  .write = ramcloud_fuse_write,
-  .statfs = ramcloud_fuse_statfs,
-  .flush = ramcloud_fuse_flush,
-  .release = ramcloud_fuse_release,
-  .fsync = ramcloud_fuse_fsync,
-  .opendir = ramcloud_fuse_opendir,
-  .readdir = ramcloud_fuse_readdir,
-  .releasedir = ramcloud_fuse_releasedir,
-  .fsyncdir = ramcloud_fuse_fsyncdir,
-  .init = ramcloud_fuse_init,
-  .destroy = ramcloud_fuse_destroy,
-  .access = ramcloud_fuse_access,
-  .create = ramcloud_fuse_create,
+  .getattr = nf_getattr
+//  .readlink = ramcloud_fuse_readlink,
+//  .mknod = ramcloud_fuse_mknod,
+//  .mkdir = ramcloud_fuse_mkdir,
+//  .unlink = ramcloud_fuse_unlink,
+//  .rmdir = ramcloud_fuse_rmdir,
+//  .symlink = ramcloud_fuse_symlink,
+//  .rename = ramcloud_fuse_rename,
+//  .link = ramcloud_fuse_link,
+//  .chmod = ramcloud_fuse_chmod,
+//  .chown = ramcloud_fuse_chown,
+//  .truncate = ramcloud_fuse_truncate,
+//  //.utimens = ramcloud_fuse_utimens,
+//  .open = ramcloud_fuse_open,
+//  .read = ramcloud_fuse_read,
+//  .write = ramcloud_fuse_write,
+//  .statfs = ramcloud_fuse_statfs,
+//  .flush = ramcloud_fuse_flush,
+//  .release = ramcloud_fuse_release,
+//  .fsync = ramcloud_fuse_fsync,
+//  .opendir = ramcloud_fuse_opendir,
+//  .readdir = ramcloud_fuse_readdir,
+//  .releasedir = ramcloud_fuse_releasedir,
+//  .fsyncdir = ramcloud_fuse_fsyncdir,
+//  .init = ramcloud_fuse_init,
+//  .destroy = ramcloud_fuse_destroy,
+//  .access = ramcloud_fuse_access,
+//  .create = ramcloud_fuse_create,
 };
 
 int main(int argc, char **argv){
