@@ -108,12 +108,35 @@ static int nf_read(
   struct fuse_file_info *fi)
 {
   int status = 0;
-  fprintf(stdout, "NF >> Reading path: %s\n", path);
+  fprintf(stdout, "NF >> READ path: %s\n", path);
 
   // TODO This calls ramcloud read
 
   return status;
 }
+
+static int nf_opendir(
+  const char *path,
+  struct fuse_file_info *fi)
+{
+  int status = 0;
+  fprintf(stdout, "NF >> OPENDIR path %s\n", path);
+  return status;
+}
+
+static int nf_readdir(
+  const char *path,
+  void *buffer,
+  fuse_fill_dir_t filer,
+  off_t offset,
+  struct fuse_file_info *fi,
+  enum fuse_readdir_flags flags)
+{
+  int status = 0;
+  fprintf(stdout, "NF >> READDIR path %s\n", path);
+  return status;
+}
+
 
 
 
@@ -338,28 +361,6 @@ int ramcloud_fuse_fsync(
   return status;
 }
 
-int ramcloud_fuse_opendir(
-  const char *path,
-  struct fuse_file_info *fi)
-{
-  int status = 0;
-  fprintf(stdout, ">> OPENDIR path=%s\n", path);
-  return status;
-}
-
-int ramcloud_fuse_readdir(
-  const char *path,
-  void *buffer,
-  fuse_fill_dir_t filer,
-  off_t offset,
-  struct fuse_file_info *fi,
-  enum fuse_readdir_flags flags)
-{
-  int status = 0;
-  fprintf(stdout, ">> READDIR path=%s\n", path);
-  return status;
-}
-
 int ramcloud_fuse_releasedir(
   const char *path,
   struct fuse_file_info *fi)
@@ -423,14 +424,14 @@ static struct fuse_operations ramcloud_fuse_oper = {
 //  .truncate = ramcloud_fuse_truncate,
 //  //.utimens = ramcloud_fuse_utimens,
 //  .open = ramcloud_fuse_open,
-  .read = nf_read
+  .read = nf_read,
 //  .write = ramcloud_fuse_write,
 //  .statfs = ramcloud_fuse_statfs,
 //  .flush = ramcloud_fuse_flush,
 //  .release = ramcloud_fuse_release,
 //  .fsync = ramcloud_fuse_fsync,
-//  .opendir = ramcloud_fuse_opendir,
-//  .readdir = ramcloud_fuse_readdir,
+  .opendir = nf_opendir,
+  .readdir = nf_readdir
 //  .releasedir = ramcloud_fuse_releasedir,
 //  .fsyncdir = ramcloud_fuse_fsyncdir,
 //  .init = ramcloud_fuse_init,
