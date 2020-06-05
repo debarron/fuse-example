@@ -3,7 +3,6 @@
 #include <string>
 #include <map>
 
-#include <string.h>
 #include "fuse_example_fs.h"
 
 using namespace std;
@@ -11,8 +10,9 @@ map<string, string> my_fs;
 map<string, string>::iterator it;
 
 char *copy_str(string value){
-  char *mem = new char[value.length() +1];
-  strcpy(mem, value.c_str());
+  char *mem = new char[value.size() +1];
+  copy(value.begin(), value.end(), mem);
+  mem[value.size()] = '\0';
   return mem;
 }
 
