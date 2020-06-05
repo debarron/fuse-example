@@ -1,38 +1,25 @@
 #include <iostream>
+#include <cstdio>
 #include <string>
 #include <map>
 
 #include "fuse_example_fs.h"
 
-extern "C" {
-#include <stdio.h>
-#include <string.h>
-
-void nf_fs_init(){cpp_fs_init();}
-
-void nf_fs_add(const char *entry){cpp_fs_add(entry);}
-
-char *nf_fs_find(const char *key){cpp_fs_find(key);}
-
-char **nf_fs_list(){cpp_fs_list();}
-}
-
-
 using namespace std;
 map<string, string> my_fs;
 map<string, string>::iterator it;
 
-void cpp_fs_init(){
+void nf_fs_init(){
   my_fs.clear();
   my_fs["/"] = "First entry";
 }
 
-void cpp_fs_add(const char *entry){
+void nf_fs_add(const char *entry){
   string fs_entry = string(entry);
   my_fs[fs_entry] = "New entry added";
 }
 
-char *cpp_fs_find(const char *key){
+char *nf_fs_find(const char *key){
   string fs_key = string(key);
   char *found = NULL;
 
@@ -43,7 +30,7 @@ char *cpp_fs_find(const char *key){
   return found;
 }
 
-char **cpp_fs_list(){
+char **nf_fs_list(){
   char **entry_list; 
   entry_list = (char **)malloc(sizeof(char*) * my_fs.size());
 
