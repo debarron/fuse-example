@@ -29,11 +29,14 @@ void nf_fs_add(const char *entry){
 
 char *nf_fs_find(const char *key){
   string fs_key = string(key);
+  string test = " DIDN'T FOUND IT";
   char *found = NULL;
 
   auto element = my_fs.find(fs_key);
   if(element != my_fs.end())
-    found = copy_str(element->second);
+    test = element->second;
+
+  found = copy_str(test);
 
   return found;
 }
