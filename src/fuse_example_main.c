@@ -19,6 +19,8 @@
 #include <time.h>
 #include <libgen.h>
 
+#include "fuse_example_fs.h"
+
 #define MAX_DATA 256
 #define STACK_MAX 256
 char stack_data [STACK_MAX][MAX_DATA];
@@ -49,6 +51,10 @@ char *stack_pop(){
 }
 */
 
+void nf_init(){
+  nf_fs_init();
+}
+
 void nf_dir_file(const char *path, char **dir, char **file){
   char *path_dir, *path_file;
 
@@ -71,14 +77,13 @@ static int nf_getattr(const char *path, struct stat *stbuf) {
   memset(stbuf, 0, sizeof(struct stat));
   nf_dir_file(path, &dir, &file);
 
-  if (file == NULL){
-    stbuf->st_mode = S_IFDIR | 0755;
-		stbuf->st_nlink = 2;
-  } else{
-    stbuf->st_mode = S_IFREG | 0444;
-		stbuf->st_nlink = 1;
-		stbuf->st_size = 100;
-  }
+  stbuf->st_mode = S_IFREG | 0444;
+	stbuf->st_nlink = 1;
+  stbuf->st_size = 100;
+  
+  char *content = nf_fs_find(path);
+  if(content != NULL)
+    fprintf(stdout, ">> NF, From memory %s\n", content);
 
 /*
   stbuf->st_mode   = node->vstat.st_mode;
