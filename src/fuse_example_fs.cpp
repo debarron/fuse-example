@@ -5,6 +5,9 @@
 #include "fuse_example_fs.h"
 
 extern "C" {
+#include <stdio.h>
+#include <string.h>
+
 using namespace std;
 map<string, string> my_fs;
 map<string, string>::iterator it;
