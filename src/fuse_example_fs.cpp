@@ -3,11 +3,19 @@
 #include <string>
 #include <map>
 
+#include <string.h>
 #include "fuse_example_fs.h"
 
 using namespace std;
 map<string, string> my_fs;
 map<string, string>::iterator it;
+
+char *copy_str(string value){
+  char *mem = new char[value.length() +1];
+  strcpy(mem, value.c_str());
+  return mem;
+}
+
 
 void nf_fs_init(){
   my_fs.clear();
@@ -25,8 +33,8 @@ char *nf_fs_find(const char *key){
 
   auto element = my_fs.find(fs_key);
   if(element != my_fs.end())
-    found = strdup(element->second.c_str());
-  
+    found = copy_str(element->second);
+
   return found;
 }
 
@@ -36,7 +44,7 @@ char **nf_fs_list(){
 
   it = my_fs.begin();
   for(int i = 0; i < my_fs.size(); i++){
-    entry_list[i] = strdup(it->second.c_str());
+    entry_list[i] = copy_str(it->second);
     it++;
   }
 
