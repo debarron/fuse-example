@@ -4,6 +4,7 @@
 
 #include "fuse_example_fs.h"
 
+extern "C" {
 using namespace std;
 map<string, string> my_fs;
 map<string, string>::iterator it;
@@ -40,4 +41,6 @@ char **nf_fs_list(){
   }
 
   return entry_list;
+}
+
 }
