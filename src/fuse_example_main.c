@@ -20,6 +20,7 @@
 #include <libgen.h>
 
 #include "fuse_example_fs.h"
+#include "cpp_example.h"
 
 #define MAX_DATA 256
 #define STACK_MAX 256
@@ -52,6 +53,7 @@ char *stack_pop(){
 */
 
 void nf_init(){
+  cpp_print("This is from C");
   nf_fs_init();
 }
 
@@ -448,6 +450,7 @@ static struct fuse_operations ramcloud_fuse_oper = {
 int main(int argc, char **argv){
   int fuse_stat;
 
+  nf_init();
   return fuse_main(argc, argv, &ramcloud_fuse_oper, NULL);
 
 }
