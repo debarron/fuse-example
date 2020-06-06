@@ -18,6 +18,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include <libgen.h>
+#include <errno.h>
 
 #include "fuse_example_fs.h"
 #include "cpp_example.h"
@@ -71,6 +72,7 @@ void nf_dir_file(const char *path, char **dir, char **file){
     *file = strdup(path_file);
   }
 }
+
 
 static int nf_getattr(const char *path, struct stat *stbuf) {
   char *dir, *file;
@@ -153,6 +155,26 @@ static int nf_readdir(
 
 
 
+int nf_mkdir(
+  const char *path,
+  mode_t mode)
+{
+  char *dir, *file, *exists;
+  int status = -errno;
+  fprintf(stdout, ">> MKDIR Creating a directory, path=%s\n", path);
+
+  nf_dir_file(path, &dir, &file);
+  exists = nf_fs_find(dir);
+  if(exists != NULL) return status;
+
+  nf_fs_add(dir);
+  status = 0;
+
+  return status;
+}
+
+
+
 
 /*
 void *ramcloud_fuse_init(
@@ -182,18 +204,6 @@ int ramcloud_fuse_getattr(
   st->st_size = 128;
 
   fprintf(stdout, ">> End of GETATTR\n");
-  return status;
-}
-
-int ramcloud_fuse_mkdir(
-  const char *path,
-  mode_t mode)
-{
-  int status = 0;
-  fprintf(stdout, ">> MKDIR Creating a directory, path=%s\n", path);
-
-  // TODO This calls ramcloud create table
-
   return status;
 }
 
