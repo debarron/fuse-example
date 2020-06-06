@@ -79,10 +79,15 @@ static int nf_getattr(const char *path, struct stat *stbuf) {
   memset(stbuf, 0, sizeof(struct stat));
   nf_dir_file(path, &dir, &file);
 
-  stbuf->st_mode = S_IFREG | 0444;
-	stbuf->st_nlink = 1;
-  stbuf->st_size = 100;
-  
+  if (file == NULL){
+    stbuf->st_mode = S_IFDIR | 0755;
+		stbuf->st_nlink = 2;
+  } else{
+    stbuf->st_mode = S_IFREG | 0444;
+		stbuf->st_nlink = 1;
+		stbuf->st_size = 100;
+  }
+
   char *content = nf_fs_find(path);
   if(content != NULL)
     fprintf(stdout, ">> NF, From memory %s\n", content);
