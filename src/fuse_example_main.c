@@ -87,7 +87,7 @@ static int nf_getattr(const char *path, struct stat *stbuf) {
     stbuf->st_mode = S_IFREG | 0444;
 		stbuf->st_nlink = 1;
 		stbuf->st_size = 100;
-    fprintf(stdout, "\tNF >> DIR %s FILE %s\n", dir, file)
+    fprintf(stdout, "\tNF >> DIR %s FILE %s\n", dir, file);
   }
 
   char *content = nf_fs_find(path);
