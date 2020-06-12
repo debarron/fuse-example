@@ -76,7 +76,7 @@ void nf_dir_file(const char *path, char **dir, char **file){
 
 static int nf_getattr(const char *path, struct stat *stbuf) {
   char *dir, *file;
-  fprintf(stdout, "NF >> Accessing: %s\n", path);
+  fprintf(stdout, "NF >> GETATTR Accessing %s\n", path);
 
   memset(stbuf, 0, sizeof(struct stat));
   nf_dir_file(path, &dir, &file);
@@ -161,10 +161,10 @@ int nf_mkdir(
 {
   char *dir, *file, *exists;
   int status = -errno;
-  fprintf(stdout, ">> MKDIR Creating a directory, path=%s\n", path);
+  fprintf(stdout, "NF >> MKDIR Creating path=%s\n", path);
 
   nf_dir_file(path, &dir, &file);
-  exists = nf_fs_find(dir);
+  exists = nf_fs_find(file);
   if(exists != NULL) return status;
 
   nf_fs_add(dir);

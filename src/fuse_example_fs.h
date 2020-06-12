@@ -6,11 +6,14 @@ extern "C" {
 #endif
 void nf_fs_init();
 
-void nf_fs_add(const char *entry);
+int nf_fs_dir_exists(const char *dir);
+int nf_fs_file_exists(const char *dir, const char *file);
 
-char *nf_fs_find(const char *key);
+int nf_fs_dir_add(const char *dir);
+int nf_fs_file_add(const char *dir, const char *file);
 
-char **nf_fs_list();
+char **nf_fs_list_root(int *n_entries);
+char **nf_fs_list_dir(const char *dir, int *n_entries);
 
 #ifdef __cplusplus
 }

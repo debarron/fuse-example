@@ -6,7 +6,7 @@
 #include "fuse_example_fs.h"
 
 using namespace std;
-map<string, string> my_fs;
+map<string, vector<string>> my_fs;
 map<string, string>::iterator it;
 
 char *copy_str(string value){
@@ -16,42 +16,104 @@ char *copy_str(string value){
   return mem;
 }
 
-
 void nf_fs_init(){
   my_fs.clear();
-  my_fs["/"] = "First entry";
+  vector<string> rootEntry;
+  rootEntry.push_back(string("THIS IS THE ROOT DIR"));
+  my_fs["/"] = rootEntry;
 }
 
-void nf_fs_add(const char *entry){
-  string fs_entry = string(entry);
-  my_fs[fs_entry] = "New entry added";
+int nf_fs_dir_exists(const char *dir){
+  string key = string(dir);
+  auto dir_element = my_fs.find(key);
+
+  if (dir_element == my_fs.end()) return 0;
+    
+  return 1;
 }
 
-char *nf_fs_find(const char *key){
-  string fs_key = string(key);
-  string test = " DIDN'T FOUND IT";
-  char *found = NULL;
+int nf_fs_file_exists(const char *dir, const char *file){
+  string key = string(dir);
+  string file_name = string(file);
+  vector<string> entries;
+  vector<string>::iterator it;
+  int file_exists = 0
 
-  auto element = my_fs.find(fs_key);
-  if(element != my_fs.end())
-    test = element->second;
+  if(!nf_fs_dir_exists(dir)) return file_exists;
 
-  found = copy_str(test);
-
-  return found;
-}
-
-char **nf_fs_list(){
-  char **entry_list; 
-  entry_list = (char **)malloc(sizeof(char*) * my_fs.size());
-
+  entries = my_fs[key];
   it = my_fs.begin();
-  for(int i = 0; i < my_fs.size(); i++){
-    entry_list[i] = copy_str(it->second);
-    it++;
+  while(!file_exists && it != my_fs.end()){
+    if(file_name.compare(it) == 0)
+      file_exists = 1;
+
+    ++it;
   }
 
-  return entry_list;
+  return file_exists;
+}
+
+
+int nf_fs_dir_add(const char *dir){
+  string new_dir; 
+  vector<string> empty_vector;
+
+  if(nf_fs_dir_exists(dir)) return 0;
+
+  new_dir = string(dir);
+  my_fs[new_dir] = empty_vector;
+  return 1;
+}
+
+int nf_fs_file_add(const char *dir, const char *file){
+  string file_name, dir_name;
+  vector<string> entries;
+
+  if(!nf_fs_dir_exists(dir)) return 0;
+  if(nf_fs_file_exists(dir, file)) return 0;
+
+  dir_name = string(dir);
+  file_name = string(file);
+  my_fs[dir_name].push_back(file_name);
+
+  return 1;
+}
+
+char **nf_fs_list_root(int *n_entries){
+  char **entries;
+  int i;
+  map<string,vector<string>::iterator it;
+
+  *n_entries = my_fs.size();
+  entries = (char **)malloc(sizeof(char *) * *n_entries);
+  i = 0;
+  for (it = my_fs.begin(); it != my_fs.end(); ++it)
+    entries[i] = copy_str(it->first);
+  
+  return entries;
+}
+
+char **nf_fs_list_dir(const char *dir, int *n_entries){
+  char **dir_entries;
+  string key;
+  vector<string> entries;
+
+  *n_entries = 0;
+  if(!nf_fs_dir_exists(dir))
+    return NULL;
+  
+  key = string(dir);
+  if(key.comare("/") == 0){
+    return nf_fs_list_root(n_entries);
+
+  entries = my_fs[key];
+  *n_entries = entries.size();
+  dir_entries = (char **)malloc(sizeof(char *) * *n_entries);
+
+  for (int i = 0; i < entries.size(); i++)
+    dir_entries[i] = copy_str(entries[i]);
+
+  return dir_entries;
 }
 
 
