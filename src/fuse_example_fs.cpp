@@ -9,7 +9,7 @@
 using namespace std;
 
 map<string, vector<string>> my_fs;
-map<string, string>::iterator it;
+map<string, vector<string>>::iterator it;
 
 char *copy_str(string value){
   char *mem = new char[value.size() +1];
@@ -30,7 +30,7 @@ int nf_fs_dir_exists(const char *dir){
   string key = string(dir);
   auto dir_element = my_fs.find(key);
 
-  else if (dir_element == my_fs.end()) return 0;
+  if (dir_element == my_fs.end()) return 0;
     
   return 1;
 }
@@ -39,18 +39,18 @@ int nf_fs_file_exists(const char *dir, const char *file){
   string key = string(dir);
   string file_name = string(file);
   vector<string> entries;
-  vector<string>::iterator it;
-  int file_exists = 0
+  vector<string>::iterator it_files;
+  int file_exists = 0;
 
   if(!nf_fs_dir_exists(dir)) return file_exists;
 
   entries = my_fs[key];
-  it = my_fs.begin();
-  while(!file_exists && it != my_fs.end()){
-    if(file_name.compare(it) == 0)
+  it_files = entries.begin();
+  while(!file_exists && it_files != entries.end()){
+    if(file_name.compare(it_files) == 0)
       file_exists = 1;
 
-    ++it;
+    ++it_files;
   }
 
   return file_exists;
