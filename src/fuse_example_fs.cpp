@@ -47,7 +47,7 @@ int nf_fs_file_exists(const char *dir, const char *file){
   entries = my_fs[key];
   it_files = entries.begin();
   while(!file_exists && it_files != entries.end()){
-    if(file_name.compare(it_files) == 0)
+    if(file_name.compare(*it_files) == 0)
       file_exists = 1;
 
     ++it_files;
