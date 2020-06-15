@@ -100,9 +100,9 @@ static int nf_getattr(const char *path, struct stat *stbuf) {
     fprintf(stdout, "\tNF >> DIR %s FILE %s\n", dir, file);
   }
 
-  char *content = nf_fs_find(path);
-  if(content != NULL)
-    fprintf(stdout, ">> NF, From memory %s\n", content);
+  //char *content = nf_fs_find(path);
+  //if(content != NULL)
+    //fprintf(stdout, ">> NF, From memory %s\n", content);
 
 /*
   stbuf->st_mode   = node->vstat.st_mode;
@@ -172,10 +172,10 @@ int nf_mkdir(
   fprintf(stdout, "NF >> MKDIR Creating path=%s\n", path);
 
   nf_dir_file(path, &dir, &file);
-  exists = nf_fs_find(file);
+  exists = NULL;//nf_fs_find(file);
   if(exists != NULL) return status;
 
-  nf_fs_add(dir);
+  //nf_fs_add(dir);
   status = 0;
 
   return status;
