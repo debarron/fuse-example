@@ -85,7 +85,6 @@ int nf_fs_file_add(const char *dir, const char *file){
 char **nf_fs_list_root(int *n_entries){
   char **entries;
   int i;
-  map<string,vector<string>::iterator it;
 
   *n_entries = my_fs.size();
   entries = (char **)malloc(sizeof(char *) * *n_entries);
