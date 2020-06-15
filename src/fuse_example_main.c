@@ -53,9 +53,17 @@ char *stack_pop(){
 }
 */
 
+void nf_add_inital_dirs(){
+  nf_fs_dir_add("a");
+  nf_fs_dir_add("b");
+  nf_fs_dir_add("c");
+}
+
 void nf_init(){
   cpp_print("This is from C");
   nf_fs_init();
+
+  nf_add_inital_dirs();
 }
 
 void nf_dir_file(const char *path, char **dir, char **file){

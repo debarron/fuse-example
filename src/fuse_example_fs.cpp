@@ -6,6 +6,7 @@
 #include "fuse_example_fs.h"
 
 using namespace std;
+
 map<string, vector<string>> my_fs;
 map<string, string>::iterator it;
 
@@ -15,6 +16,7 @@ char *copy_str(string value){
   mem[value.size()] = '\0';
   return mem;
 }
+
 
 void nf_fs_init(){
   my_fs.clear();
@@ -27,7 +29,7 @@ int nf_fs_dir_exists(const char *dir){
   string key = string(dir);
   auto dir_element = my_fs.find(key);
 
-  if (dir_element == my_fs.end()) return 0;
+  else if (dir_element == my_fs.end()) return 0;
     
   return 1;
 }
