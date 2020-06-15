@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <string>
 #include <map>
+#include <vector>
 
 #include "fuse_example_fs.h"
 
@@ -105,7 +106,7 @@ char **nf_fs_list_dir(const char *dir, int *n_entries){
     return NULL;
   
   key = string(dir);
-  if(key.comare("/") == 0){
+  if(key.compare("/") == 0)
     return nf_fs_list_root(n_entries);
 
   entries = my_fs[key];
