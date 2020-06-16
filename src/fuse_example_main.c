@@ -28,7 +28,7 @@
 char stack_data [STACK_MAX][MAX_DATA];
 int stack_top = -1;
 mode_t dir_mode, file_mode;
-char *NO_ELEMENT = NULL
+char *NO_ELEMENT = NULL;
 
 /* Result 1: OK
 // Result 0: Error 
