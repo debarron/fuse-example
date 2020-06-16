@@ -65,7 +65,7 @@ void nf_set_stat(struct stat *vstat, int is_dir){
   vstat->st_atime = now;
   vstat->st_ctime = now;
   vstat->st_mtime = now;
-  vstat->st_mode = (is_dir) S_IFDIR : S_IFREG;
+  vstat->st_mode = (is_dir) ? S_IFDIR : S_IFREG;
 }
 
 
