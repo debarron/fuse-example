@@ -28,6 +28,7 @@
 char stack_data [STACK_MAX][MAX_DATA];
 int stack_top = -1;
 mode_t dir_mode, file_mode;
+char *NO_ELEMENT = NULL
 
 /* Result 1: OK
 // Result 0: Error 
@@ -84,7 +85,7 @@ void nf_dir_file(const char *path, char **dir, char **file){
   path_file = basename(path);
 
   if(path_dir[0] == '/'){
-    *dir = strdup(path_file);
+    *dir = strdup(path_dir);
     *file = NULL;
   } else{
     *dir = strdup(&path_dir[1]);
@@ -102,15 +103,19 @@ static int nf_getattr(const char *path, struct stat *stbuf) {
   nf_dir_file(path, &dir, &file);
 
   if (file == NULL){
-    if(!nf_fs_dir_exists(dir))
+    if(!nf_fs_dir_exists(dir)){
+      errno = ENOENT;
       return -errno;
+    }
 
     stbuf->st_mode = S_IFDIR | 0755;
 		stbuf->st_nlink = 2;
     fprintf(stdout, "\tNF >> DIR %s\n", dir);
   } else{
-    if(!nf_fs_file_exists(dir, file))
+    if(!nf_fs_file_exists(dir, file)){
+      errno = ENOENT;
       return -errno;
+    }
 
     stbuf->st_mode = S_IFREG | 0444;
 		stbuf->st_nlink = 1;
