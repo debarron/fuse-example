@@ -188,7 +188,7 @@ static int nf_readdir(
   }
 
   // Create the stats
-  struct stat *vstats = (struct stat *) malloc(sizeof(struct stat) * n_entries);
+  struct stat *vstat = (struct stat *) malloc(sizeof(struct stat) * n_entries);
   for(int i = 0; i < n_entries; i++){
     nf_set_stat(&vstat[i], 1);
     filler(buffer, entries[i], &vstat[i], 0, 0);
