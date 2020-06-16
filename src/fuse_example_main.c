@@ -16,7 +16,7 @@
 
 #include <unistd.h>
 #include <sys/types.h>
-#include <time.h>
+#include <sys/time.h>
 #include <libgen.h>
 #include <errno.h>
 
@@ -58,6 +58,16 @@ void nf_add_inital_dirs(){
   nf_fs_dir_add("b");
   nf_fs_dir_add("c");
 }
+
+void nf_set_stat(struct stat *vstat, int is_dir){
+  time_t now = time(0);
+  
+  vstat->st_atime = now;
+  vstat->st_ctime = now;
+  vstat->st_mtime = now;
+  vstat->st_mode = (is_dir) S_IFDIR : S_IFREG;
+}
+
 
 void nf_init(){
   cpp_print("This is from C");
@@ -177,12 +187,11 @@ static int nf_readdir(
     fprintf(stdout, ">> %s\n", entries[i]);
   }
 
+  // Create the stats
+  struct stat *vstats = (struct stat *) malloc(sizeof(struct stat) * n_entries);
   for(int i = 0; i < n_entries; i++){
-    int len = strlen(entries[i]) + 1;
-    char *name = (char *)malloc(sizeof(char) * len);
-    strcpy(name, entries[i]);
-    name[len-1] = '\0';
-    filler(buffer, name, NULL, 0, 0);
+    nf_set_stat(&vstat[i], 1);
+    filler(buffer, entries[i], &vstat[i], 0, 0);
   }
 
 
