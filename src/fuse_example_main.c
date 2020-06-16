@@ -102,6 +102,8 @@ static int nf_getattr(const char *path, struct stat *stbuf) {
   memset(stbuf, 0, sizeof(struct stat));
   nf_dir_file(path, &dir, &file);
 
+  fprintf(stdout, ">> DIR=%s FILE=%s\n", dir, file);
+
   if (file == NULL){
     if(!nf_fs_dir_exists(dir)){
       errno = ENOENT;
