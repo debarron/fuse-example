@@ -95,10 +95,15 @@ void nf_dir_file(const char *path, char **dir, char **file){
 
 static int nf_getattr(const char *path, struct stat *stbuf) {
   char *dir, *file;
+
   fprintf(stdout, "NF >> GETATTR Accessing %s\n", path);
 
   memset(stbuf, 0, sizeof(struct stat));
   nf_dir_file(path, &dir, &file);
+
+  if(!nf_fs_file_exists(dir, file))
+    return -errno;
+
 
   if (file == NULL){
     stbuf->st_mode = S_IFDIR | 0755;
