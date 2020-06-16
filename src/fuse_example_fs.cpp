@@ -35,6 +35,7 @@ int nf_fs_dir_exists(const char *dir){
   return 1;
 }
 
+
 int nf_fs_file_exists(const char *dir, const char *file){
   string key = string(dir);
   string file_name = string(file);

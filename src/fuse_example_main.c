@@ -101,19 +101,22 @@ static int nf_getattr(const char *path, struct stat *stbuf) {
   memset(stbuf, 0, sizeof(struct stat));
   nf_dir_file(path, &dir, &file);
 
-  if(!nf_fs_file_exists(dir, file))
-    return -errno;
-
-
   if (file == NULL){
+    if(!nf_fs_dir_exists(dir))
+      return -errno;
+
     stbuf->st_mode = S_IFDIR | 0755;
 		stbuf->st_nlink = 2;
     fprintf(stdout, "\tNF >> DIR %s\n", dir);
   } else{
+    if(!nf_fs_file_exists(dir, file))
+      return -errno;
+
     stbuf->st_mode = S_IFREG | 0444;
 		stbuf->st_nlink = 1;
 		stbuf->st_size = 100;
     fprintf(stdout, "\tNF >> DIR %s FILE %s\n", dir, file);
+    
   }
 
   //char *content = nf_fs_find(path);
