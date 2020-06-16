@@ -83,7 +83,7 @@ void nf_dir_file(const char *path, char **dir, char **file){
   path_dir = dirname(path);
   path_file = basename(path);
 
-  if(strcmp(path_dir, "/") == 0){
+  if(path_dir[0] == '/'){
     *dir = strdup(path_file);
     *file = NULL;
   } else{
