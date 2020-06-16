@@ -151,7 +151,7 @@ static int nf_opendir(
 static int nf_readdir(
   const char *path,
   void *buffer,
-  fuse_fill_dir_t filer,
+  fuse_fill_dir_t filler,
   off_t offset,
   struct fuse_file_info *fi,
   enum fuse_readdir_flags flags)
