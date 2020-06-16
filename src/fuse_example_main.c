@@ -167,10 +167,10 @@ static int nf_readdir(
     ? nf_fs_list_root(&n_entries) 
     : nf_fs_list_dir(dir, &n_entries);
   
-  filler(".", NULL, 0, 0);
-  filler("..", NULL, 0, 0);
+  filler(buffer,".", NULL, 0, 0);
+  filler(buffer,"..", NULL, 0, 0);
   for(int i = 0; i < n_entries; i++)
-    filler(entries[i], NULL, 0, 0);
+    filler(buffer,entries[i], NULL, 0, 0);
 
   // append all elements to filler
   // filler(.., NULL, 0)
