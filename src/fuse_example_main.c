@@ -168,12 +168,16 @@ static int nf_readdir(
     : nf_fs_list_dir(dir, &n_entries);
   
   fprintf(stdout, "IT GOT %d entries\n", n_entries);
-  filler(buffer,".", NULL, 0, 0);
-  filler(buffer,"..", NULL, 0, 0);
+  filler(buffer, ".", NULL, 0, 0);
+  filler(buffer, "..", NULL, 0, 0);
+  fprintf(stdout, ">> Added . .. to buffer\n");
+
   for(int i = 0; i < n_entries; i++){
-    char *name = (char *)malloc(sizeof(char) * strlen(entries[i]));
+    int len = strlen(entries[i]) + 1;
+    char *name = (char *)malloc(sizeof(char) * len);
     strcpy(name, entries[i]);
-    //filler(buffer, name, NULL, 0, 0);
+    name[len-1] = '\0';
+    filler(buffer, name, NULL, 0, 0);
   }
 
   // append all elements to filler
