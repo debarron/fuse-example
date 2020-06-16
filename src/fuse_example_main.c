@@ -169,8 +169,11 @@ static int nf_readdir(
   
   filler(buffer,".", NULL, 0, 0);
   filler(buffer,"..", NULL, 0, 0);
-  for(int i = 0; i < n_entries; i++)
-    filler(buffer,entries[i], NULL, 0, 0);
+  for(int i = 0; i < n_entries; i++){
+    char *name = (char *)malloc(sizeof(char) * strlen(entries[i]));
+    strcpy(name, entries[i]);
+    filler(buffer, name, NULL, 0, 0);
+  }
 
   // append all elements to filler
   // filler(.., NULL, 0)
