@@ -167,6 +167,7 @@ static int nf_readdir(
     ? nf_fs_list_root(&n_entries) 
     : nf_fs_list_dir(dir, &n_entries);
   
+  fprintf(stdout, "IT GOT %d entries\n", n_entries);
   filler(buffer,".", NULL, 0, 0);
   filler(buffer,"..", NULL, 0, 0);
   for(int i = 0; i < n_entries; i++){
