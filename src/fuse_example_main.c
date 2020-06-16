@@ -157,7 +157,24 @@ static int nf_readdir(
   enum fuse_readdir_flags flags)
 {
   int status = 0;
+  char *dir, *file, **entries;
+  int n_entries;
+
   fprintf(stdout, "NF >> READDIR path %s\n", path);
+  nf_dir_file(path, &dir, &file);
+
+  entries = (dir[0] == '/') 
+    ? nf_fs_list_root(&n_entries) 
+    : entries = nf_fs_list_dir(dir, &n_entries);
+  
+  filler(".", NULL, 0);
+  filler("..", NULL, 0);
+  for(int i = 0; i < n_entries; i++)
+    filler(entries[i], NULL, 0)
+
+  // append all elements to filler
+  // filler(.., NULL, 0)
+  // filler(entryInDir, NULL, 0)
   return status;
 }
 
