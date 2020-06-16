@@ -90,8 +90,10 @@ char **nf_fs_list_root(int *n_entries){
   *n_entries = my_fs.size();
   entries = (char **)malloc(sizeof(char *) * *n_entries);
   i = 0;
-  for (it = my_fs.begin(); it != my_fs.end(); ++it)
+  for (it = my_fs.begin(); it != my_fs.end(); ++it){
     entries[i] = copy_str(it->first);
+    i++;
+  }
   
   return entries;
 }
