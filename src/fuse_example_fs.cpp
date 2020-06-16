@@ -58,12 +58,13 @@ int nf_fs_file_exists(const char *dir, const char *file){
 
 
 int nf_fs_dir_add(const char *dir){
+  char *copy_dir = copy_str(dir)
   string new_dir; 
   vector<string> empty_vector;
 
   if(nf_fs_dir_exists(dir)) return 0;
 
-  new_dir = string(dir);
+  new_dir = string(copy_dir);
   my_fs[new_dir] = empty_vector;
   return 1;
 }
