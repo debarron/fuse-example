@@ -27,6 +27,7 @@
 #define STACK_MAX 256
 char stack_data [STACK_MAX][MAX_DATA];
 int stack_top = -1;
+mode_t dir_mode, file_mode;
 
 /* Result 1: OK
 // Result 0: Error 
@@ -207,16 +208,16 @@ int nf_mkdir(
   const char *path,
   mode_t mode)
 {
-  char *dir, *file, *exists;
+  char *dir, *file;
+  int exists;
   int status = -errno;
-  fprintf(stdout, "NF >> MKDIR Creating path=%s\n", path);
 
   nf_dir_file(path, &dir, &file);
-  exists = NULL;//nf_fs_find(file);
-  if(exists != NULL) return status;
+  fprintf(stdout, "NF >> MKDIR Creating path=%s dir=%s file=%s\n", path, dir, file);
 
-  //nf_fs_add(dir);
-  status = 0;
+  exists = nf_fs_dir_add(file);
+  dir_mode = mode;
+  status = (exists) ? status : 0;
 
   return status;
 }
