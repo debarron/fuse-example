@@ -86,7 +86,7 @@ void nf_dir_file(const char *path, char **dir, char **file){
   
   fprintf(stdout, ">> nf_dir_file DIR=%s FILE=%s\n", path_dir, path_file);
 
-  if(path_dir[0] == '/'){
+  if(strcmp(path_dir,"/") == 0){
     *dir = strdup(path_dir);
     *file = NULL;
   } else{
