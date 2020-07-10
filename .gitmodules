@@ -1,0 +1,6 @@
+[submodule "modules/c-data-structures"]
+	path = modules/c-data-structures
+	url = https://github.com/debarron/c-data-structures.git
+[submodule "modules/c-str-functions"]
+	path = modules/c-str-functions
+	url = https://github.com/debarron/c-str-functions.git
