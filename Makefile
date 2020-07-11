@@ -13,7 +13,8 @@ INCLUDE_LOCAL = -I$(LOCAL_LIB) -I$(LOCAL_SRC)
 INCLUDE_ALL = $(INCLUDE_LOCAL) $(INCLUDE_SUBMODULES)
 
 all: objects fuse_dependencies tests
-.PHONY: all
+
+.PHONY: $(dependencies) 
 
 objects: $(dependencies) fe_data.o
 
