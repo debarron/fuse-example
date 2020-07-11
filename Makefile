@@ -43,7 +43,9 @@ fe_data_test.o: fe_data.o
 		$(INCLUDE_ALL) 
 
 fe_data_test: fe_data_test.o
-	gcc -o $(LOCAL_BIN)/fe_data_test $(LOCAL_LIB)/fe_data_test.o \
+	gcc -o $(LOCAL_BIN)/fe_data_test \
+		$(LOCAL_LIB)/fe_data_test.o \
+		$(LOCAL_LIB)/fe_data.o
 		$(INCLUDE_ALL) 
 
 fuse_file_operations.o: objects
