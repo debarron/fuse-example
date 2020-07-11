@@ -35,11 +35,13 @@ $(dependencies):
 	$(MAKE) -C $@
 
 fe_data.o: $(dependencies)
-	gcc -o $(LOCAL_LIB)/fe_data.o -c $(LOCAL_SRC)/fe_data.c \
+	gcc -o $(LOCAL_LIB)/fe_data.o \
+		-c $(LOCAL_SRC)/fe_data.c \
 		$(INCLUDE_ALL)
 
 fe_data_test.o: fe_data.o
-	gcc -o $(LOCAL_LIB)/fe_data_test.o -c $(LOCAL_SRC)/fe_data_test.c \
+	gcc -o $(LOCAL_LIB)/fe_data_test.o \
+		-c $(LOCAL_SRC)/fe_data_test.c \
 		$(INCLUDE_ALL) 
 
 fe_data_test: fe_data_test.o
@@ -49,11 +51,13 @@ fe_data_test: fe_data_test.o
 		$(INCLUDE_ALL) 
 
 fuse_file_operations.o: objects
-	gcc -o $(LOCAL_LIB)/fuse_file_operations.o -c $(LOCAL_SRC)/fuse_file_operations.c \
-		$(INCLUDE_ALL)
+	gcc -o $(LOCAL_LIB)/fuse_file_operations.o \
+		-c $(LOCAL_SRC)/fuse_file_operations.c \
+		$(LDFLAGS) $(INCLUDE_ALL)
 
 fuse_example_main.o: fuse_file_operations.o
-	gcc -o $(LOCAL_LIB)/fuse_example_main.o -g -c $(LOCAL_SRC)/fuse_example_main.c \
+	gcc -o $(LOCAL_LIB)/fuse_example_main.o -g \
+		-c $(LOCAL_SRC)/fuse_example_main.c \
 		$(LDFLAGS) $(INCLUDE_ALL)
 
 fuse-example: fuse_dependencies
