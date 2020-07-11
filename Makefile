@@ -1,4 +1,3 @@
-LDFLAGS=`pkg-config fuse3 --cflags --libs`
 
 dependencies = modules/c-str-functions modules/c-data-structures
 dependencies_src = -Imodules/c-str-functions/src -Imodules/c-data-structures/src
@@ -11,6 +10,7 @@ LOCAL_BIN = ./bin
 INCLUDE_LOCAL = -I$(LOCAL_LIB) -I$(LOCAL_SRC)
 
 INCLUDE_ALL = $(INCLUDE_LOCAL) $(INCLUDE_SUBMODULES)
+LDFLAGS=`pkg-config fuse3 --cflags --libs`
 
 all: objects fuse_dependencies tests
 
