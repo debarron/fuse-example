@@ -12,6 +12,10 @@ INCLUDE_LOCAL = -I$(LOCAL_LIB) -I$(LOCAL_SRC)
 INCLUDE_ALL = $(INCLUDE_LOCAL) $(INCLUDE_SUBMODULES)
 LDFLAGS=`pkg-config fuse3 --cflags --libs`
 
+fe_data_tests_objects = $(LOCAL_LIB)/fe_data.o \
+												modules/c-str-functions/lib/str_functions.o \
+												modules/c-data-structures/lib/tree.o
+
 all: objects fuse_dependencies tests
 
 .PHONY: $(dependencies) 
@@ -29,7 +33,8 @@ fe_data.o: $(dependencies)
 	gcc -o $(LOCAL_LIB)/fe_data.o	-c $(LOCAL_SRC)/fe_data.c $(INCLUDE_ALL)
 
 fe_data_test: objects
-	gcc -o $(LOCAL_BIN)/fe_data_test $(LOCAL_SRC)/fe_data_test.c $(INCLUDE_ALL)
+	gcc -o $(LOCAL_BIN)/fe_data_test $(LOCAL_SRC)/fe_data_test.c \
+		$(fe_data_tests_objects) $(INCLUDE_ALL) 
 
 fuse_file_operations.o: objects
 	gcc -o $(LOCAL_LIB)/fuse_file_operations.o -c $(LOCAL_SRC)/fuse_file_operations.c \
