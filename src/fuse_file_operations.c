@@ -48,7 +48,7 @@ static int fe_getattr(
 
   memset(stbuf, 0, sizeof(struct stat));
   entry_info = fe_data_from_void_ptr(entry->data);
-  memcpy(sbuf, &entry_info.vstat, sizeof(struct stat));
+  memcpy(stbuf, &entry_info.vstat, sizeof(struct stat));
 
   return 0;
 }
