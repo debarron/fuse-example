@@ -24,10 +24,10 @@ tests: fe_data_test
 $(dependencies): 
 	$(MAKE) -C $@
 
-fe_data.o: 
+fe_data.o: $(dependencies)
 	gcc -o $(LOCAL_LIB)/fe_data.o	-c $(LOCAL_SRC)/fe_data.c $(INCLUDE_ALL)
 
-fe_data_test: 
+fe_data_test: $(objects)
 	gcc -o $(LOCAL_BIN)/fe_data_test $(LOCAL_SRC)/fe_data_test.c $(INCLUDE_ALL)
 
 fuse_file_operations.o: objects
