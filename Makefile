@@ -39,7 +39,7 @@ fe_data.o: $(dependencies)
 		$(INCLUDE_ALL)
 
 fe_data_test.o: fe_data.o
-	gcc -o $(LOCAL_LIB)/fe_data_test.o $(LOCAL_SRC)/fe_data_test.c \
+	gcc -o $(LOCAL_LIB)/fe_data_test.o -c $(LOCAL_SRC)/fe_data_test.c \
 		$(INCLUDE_ALL) 
 
 fe_data_test: fe_data_test.o
