@@ -55,7 +55,7 @@ fuse_file_operations.o: objects
 		-c $(LOCAL_SRC)/fuse_file_operations.c \
 		$(LDFLAGS) $(INCLUDE_ALL)
 
-fuse_example_main.o: fuse_file_operations.o
+fuse_example_main.o: objects
 	gcc -o $(LOCAL_LIB)/fuse_example_main.o -g \
 		-c $(LOCAL_SRC)/fuse_example_main.c \
 		$(LDFLAGS) $(INCLUDE_ALL)
