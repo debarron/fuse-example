@@ -56,6 +56,7 @@ fuse_file_operations.o: objects
 	gcc -o $(LOCAL_LIB)/fuse_file_operations.o \
 		-c $(LOCAL_SRC)/fuse_file_operations.c \
 		$(LDFLAGS) $(INCLUDE_ALL) \
+		lib/fe_data.o \
 		modules/c-str-functions/lib/str_functions.o \
 		modules/c-data-structures/lib/tree.o
 
