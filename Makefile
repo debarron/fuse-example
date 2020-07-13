@@ -22,7 +22,7 @@ MAIN_COMPONENTS = modules/c-str-functions/lib/str_functions.o \
 									$(LOCAL_LIB)/fuse_example_main.o
 
 all: objects fuse_dependencies tests
-.PHONY: $(dependencies) objects
+.PHONY: $(dependencies) fe_data.o fuse_file_operations.o fuse_example_main.o
 
 git-submodules:
 	echo $(GIT_INIT_SUBMODULES)
