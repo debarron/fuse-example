@@ -55,7 +55,9 @@ fe_data_test: fe_data_test.o
 fuse_file_operations.o: objects
 	gcc -o $(LOCAL_LIB)/fuse_file_operations.o \
 		-c $(LOCAL_SRC)/fuse_file_operations.c \
-		$(LDFLAGS) $(INCLUDE_ALL)
+		$(LDFLAGS) $(INCLUDE_ALL) \
+		modules/c-str-functions/lib/str_functions.o \
+		modules/c-data-structures/lib/tree.o
 
 fuse_example_main.o: objects
 	gcc -o $(LOCAL_LIB)/fuse_example_main.o -g \
