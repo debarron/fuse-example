@@ -25,7 +25,27 @@
 
 #define FE_FILE_SIZE 1048576
 
-tree_t *fs;
+struct filesystem {
+  tree_t *root;
+};
+
+struct filehandle {
+  tree_t *node;
+  int o_flags;
+};
+
+struct filesystem the_fs;
+
+
+
+void fe_init(
+  struct fuse_conn_info *conn,
+  struct fuse_config *config)
+{
+  int status = 0;
+  fprintf(stdout, ">> INIT Filesystem initiated/n");
+  return NULL;
+}
 
 static void fe_set_file_stat(struct stat *v){
   v->st_mode = S_IFREG | 0444;
@@ -45,7 +65,7 @@ static int fe_getattr(
   tree_t *entry;
   fe_data entry_info;
 
-  entry = tree_find(fs, path);
+  entry = tree_find(fs.root, path);
   if(entry == NULL){
     errno = ENOENT;
     return -errno;
@@ -175,7 +195,10 @@ static struct fuse_operations ramcloud_fuse_oper = {
 int main(int argc, char **argv){
   int fuse_stat;
 
-  fs = tree_init();
+  struct filesystem fs;
+  tree_t *root = tree_init();
+  fs.root->root;
+
   return fuse_main(argc, argv, &ramcloud_fuse_oper, NULL);
 }
 
