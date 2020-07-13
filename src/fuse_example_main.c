@@ -65,6 +65,8 @@ static int fe_getattr(
   tree_t *entry;
   fe_data entry_info;
 
+  fprintf(stdout, "Enter the function fe_getattr\n");
+
   entry = tree_find(the_fs.root, path);
   if(entry == NULL){
     errno = ENOENT;
