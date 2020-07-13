@@ -197,7 +197,7 @@ int main(int argc, char **argv){
 
   struct filesystem fs;
   tree_t *root = tree_init();
-  fs.root->root;
+  fs.root = root;
 
   return fuse_main(argc, argv, &ramcloud_fuse_oper, NULL);
 }
