@@ -176,7 +176,6 @@ int main(int argc, char **argv){
   int fuse_stat;
 
   return fuse_main(argc, argv, &ramcloud_fuse_oper, NULL);
-
 }
 
 
