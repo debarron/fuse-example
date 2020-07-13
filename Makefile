@@ -66,7 +66,8 @@ fuse-example: fuse_dependencies
 	g++ -o $(LOCAL_BIN)/fuse-example \
 		-Wall $(LDFLAGS) \
 		$(INCLUDE_ALL) \
-		$(MAIN_COMPONENTS)	
+		$(LOCAL_LIB)/fuse_file_operations.o \
+		$(LOCAL_LIB)/fuse_example_main.o \
 
 #
 #fuse_example_fs.o: 
