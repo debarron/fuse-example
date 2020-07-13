@@ -61,8 +61,11 @@ fuse_example_main.o: objects
 		$(LDFLAGS) $(INCLUDE_ALL)
 
 fuse-example: fuse_dependencies
-	g++ -o $(LOCAL_BIN)/fuse-example -Wall $(LOCAL_LIB)/fuse_example_main.o \
-		$(LDFLAGS) $(INCLUDE_ALL)
+	g++ -o $(LOCAL_BIN)/fuse-example \
+		-Wall $(LDFLAGS) \
+		$(INCLUDE_ALL) \
+		$(LOCAL_LIB)/fuse_example_main.o \
+		$(LOCAL_LIB)/fuse_file_operations.o
 	
 
 #
