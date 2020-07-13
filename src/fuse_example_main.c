@@ -65,7 +65,7 @@ static int fe_getattr(
   tree_t *entry;
   fe_data entry_info;
 
-  entry = tree_find(fs.root, path);
+  entry = tree_find(the_fs.root, path);
   if(entry == NULL){
     errno = ENOENT;
     return -errno;
@@ -195,9 +195,8 @@ static struct fuse_operations ramcloud_fuse_oper = {
 int main(int argc, char **argv){
   int fuse_stat;
 
-  struct filesystem fs;
   tree_t *root = tree_init();
-  fs.root = root;
+  the_fs.root = root;
 
   return fuse_main(argc, argv, &ramcloud_fuse_oper, NULL);
 }
