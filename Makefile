@@ -54,9 +54,11 @@ fuse_example_main.o: objects
 
 fuse-example: fuse_example_main.o
 	g++ -o $(LOCAL_BIN)/fuse-example \
+		$(LOCAL_LIB)/fuse_example_main.o \
+		./modules/c-data-structures/lib/tree.o \
+		./lib/fe_data.o \
 		-Wall $(LDFLAGS) \
-		$(INCLUDE_ALL) \
-		$(LOCAL_LIB)/fuse_example_main.o 
+		$(INCLUDE_ALL) 
 
 #
 #fuse_example_fs.o: 

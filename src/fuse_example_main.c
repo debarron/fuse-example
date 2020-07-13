@@ -175,6 +175,7 @@ static struct fuse_operations ramcloud_fuse_oper = {
 int main(int argc, char **argv){
   int fuse_stat;
 
+  fs = tree_init();
   return fuse_main(argc, argv, &ramcloud_fuse_oper, NULL);
 }
 
