@@ -18,7 +18,7 @@ LDFLAGS=`pkg-config fuse3 --cflags --libs`
 
 
 all: objects fuse_dependencies tests
-.PHONY: $(dependencies) 
+.PHONY: $(dependencies) objects
 
 git-submodules:
 	echo $(GIT_INIT_SUBMODULES)

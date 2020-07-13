@@ -1,24 +1,7 @@
 /*
  *
  * */
-
-#define FUSE_USE_VERSION 31
-
-#include <fuse.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/time.h>
-#include <libgen.h>
-#include <errno.h>
-
-#include "tree.h"
-#include "fe_data.h"
-
-#define FE_FILE_SIZE 1048576
+#include "fuse_file_operations.h"
 
 extern tree_t *fs;
 
