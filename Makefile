@@ -22,14 +22,12 @@ MAIN_COMPONENTS = modules/c-str-functions/lib/str_functions.o \
 									$(LOCAL_LIB)/fuse_example_main.o
 
 all: objects fuse_dependencies tests
-.PHONY: $(dependencies) fe_data.o fuse_file_operations.o fuse_example_main.o
+.PHONY: $(dependencies) fe_data.o fuse_example_main.o
 
 git-submodules:
 	echo $(GIT_INIT_SUBMODULES)
 
 objects: $(dependencies) fe_data.o
-
-fuse_dependencies: fuse_file_operations.o fuse_example_main.o
 
 tests: fe_data_test
 
@@ -52,13 +50,6 @@ fe_data_test: fe_data_test.o
 		$(LOCAL_LIB)/fe_data.o \
 		$(INCLUDE_ALL) 
 
-fuse_file_operations.o: objects
-	gcc -o $(LOCAL_LIB)/fuse_file_operations.o \
-		-c $(LOCAL_SRC)/fuse_file_operations.c \
-		$(LDFLAGS) $(INCLUDE_ALL) \
-		lib/fe_data.o \
-		modules/c-str-functions/lib/str_functions.o \
-		modules/c-data-structures/lib/tree.o
 
 fuse_example_main.o: objects
 	gcc -o $(LOCAL_LIB)/fuse_example_main.o -g \
@@ -69,7 +60,6 @@ fuse-example: fuse_dependencies
 	g++ -o $(LOCAL_BIN)/fuse-example \
 		-Wall $(LDFLAGS) \
 		$(INCLUDE_ALL) \
-		$(LOCAL_LIB)/fuse_file_operations.o \
 		$(LOCAL_LIB)/fuse_example_main.o \
 
 #
