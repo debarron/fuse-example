@@ -22,7 +22,6 @@
 
 #include "fuse_file_operations.h"
 
-
 static struct fuse_operations ramcloud_fuse_oper = {
   .getattr = fe_getattr,
 //  .readlink = ramcloud_fuse_readlink,
@@ -57,7 +56,6 @@ static struct fuse_operations ramcloud_fuse_oper = {
 int main(int argc, char **argv){
   int fuse_stat;
 
-  nf_init();
   return fuse_main(argc, argv, &ramcloud_fuse_oper, NULL);
 
 }
