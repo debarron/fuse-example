@@ -16,12 +16,11 @@ INCLUDE_LOCAL = -I$(LOCAL_LIB) -I$(LOCAL_SRC)
 INCLUDE_ALL = $(INCLUDE_LOCAL) $(INCLUDE_SUBMODULES)
 LDFLAGS=`pkg-config fuse3 --cflags --libs`
 
-
-all: objects tests
-.PHONY: objects tests
-
 git-submodules:
 	echo $(GIT_INIT_SUBMODULES)
+
+all: objects tests
+.PHONY: $(dependencies) objects tests
 
 objects: $(dependencies) fe_data.o fuse_example_main.o
 
