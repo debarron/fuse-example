@@ -56,7 +56,7 @@ fuse_example_main.o: objects
 		-c $(LOCAL_SRC)/fuse_example_main.c \
 		$(LDFLAGS) $(INCLUDE_ALL)
 
-fuse-example: fuse_dependencies
+fuse-example: fuse_example_main.o
 	g++ -o $(LOCAL_BIN)/fuse-example \
 		-Wall $(LDFLAGS) \
 		$(INCLUDE_ALL) \
