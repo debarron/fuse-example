@@ -16,18 +16,14 @@ INCLUDE_LOCAL = -I$(LOCAL_LIB) -I$(LOCAL_SRC)
 INCLUDE_ALL = $(INCLUDE_LOCAL) $(INCLUDE_SUBMODULES)
 LDFLAGS=`pkg-config fuse3 --cflags --libs`
 
-MAIN_COMPONENTS = modules/c-str-functions/lib/str_functions.o \
-									modules/c-data-structures/lib/tree.o \
-									$(LOCAL_LIB)/fuse_file_operations.o \
-									$(LOCAL_LIB)/fuse_example_main.o
 
-all: objects fuse_dependencies tests
-.PHONY: $(dependencies) fe_data.o fuse_example_main.o
+all: objects tests
+.PHONY: objects tests
 
 git-submodules:
 	echo $(GIT_INIT_SUBMODULES)
 
-objects: $(dependencies) fe_data.o
+objects: $(dependencies) fe_data.o fuse_example_main.o
 
 tests: fe_data_test
 
@@ -60,7 +56,7 @@ fuse-example: fuse_example_main.o
 	g++ -o $(LOCAL_BIN)/fuse-example \
 		-Wall $(LDFLAGS) \
 		$(INCLUDE_ALL) \
-		$(LOCAL_LIB)/fuse_example_main.o \
+		$(LOCAL_LIB)/fuse_example_main.o 
 
 #
 #fuse_example_fs.o: 
