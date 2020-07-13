@@ -21,6 +21,9 @@
 #include <errno.h>
 
 #include "fuse_file_operations.h"
+#include "tree.h"
+
+tree_t *fs;
 
 static struct fuse_operations ramcloud_fuse_oper = {
   .getattr = fe_getattr,
