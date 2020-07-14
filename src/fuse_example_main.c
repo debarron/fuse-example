@@ -160,7 +160,7 @@ static int fe_readdir(
   else{
     parent = tree_find_parent(the_fs.root, path);
     parent_data = fe_data_from_void_ptr(parent->data);
-    filler(buffer, "..", &parent_data.vstata, 0, 0);
+    filler(buffer, "..", &parent_data.vstat, 0, 0);
   }
     
   // fill_up_children
