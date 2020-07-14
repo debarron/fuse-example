@@ -156,7 +156,7 @@ static int fe_readdir(
   } 
 
   filler(buffer, ".",  &entry_data.vstat, 0, 0);
-  if(strcmp(path, THE_ROOT) == 0) filler(buff, "..", NULL, 0, 0);
+  if(strcmp(path, THE_ROOT) == 0) filler(buffer, "..", NULL, 0, 0);
   else{
     parent = tree_find_parent(the_fs.root, path);
     parent_data = fe_data_from_void_ptr(parent->data);
