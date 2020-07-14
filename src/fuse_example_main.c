@@ -190,14 +190,20 @@ static int fe_mknod(
 }
 
 static int fe_entry_exists(const char *path){
-  if (tree_find(the_fs.root, path) != NULL) return 1;
-  else return 0; 
+  if (tree_find(the_fs.root, path) != NULL) 
+    return 1;
+  else 
+    return 0; 
 }
 
 static int fe_entry_is_file(const char *path){
   tree_t *entry = tree_find(the_fs.root, path);
   fe_data entry_data = fe_data_from_void_ptr(entry->data);
-  return S_ISREG(entry_data.vstat.st_mode);
+
+  if (S_ISREG(entry_data.vstat.st_mode)) 
+    return 1;
+  else
+    return 0;
 }
 
 static int fe_readdir(
@@ -214,10 +220,9 @@ static int fe_readdir(
   if (!fe_entry_exists(path))
     errno = ENOENT;
     return -errno;
-  } 
-
-  if (fe_entry_is_file(path) != 0)
+  } else if (fe_entry_is_file(path)){
     return -ENOTDIR;
+  }
 
   entry = tree_find(the_fs.root, path);
   entry_data = fe_data_from_void_ptr(entry->data);
