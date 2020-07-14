@@ -197,10 +197,8 @@ static int fe_entry_exists(const char *path){
 static int fe_entry_is_file(const char *path){
   tree_t *entry = tree_find(the_fs.root, path);
   fe_data entry_data = fe_data_from_void_ptr(entry->data);
-
-  return S_ISREG(entry_data.vstat);
+  return S_ISREG(entry_data.vstat.st_mode);
 }
-
 
 static int fe_readdir(
   const char *path,
