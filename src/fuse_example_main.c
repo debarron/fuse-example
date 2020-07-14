@@ -164,6 +164,21 @@ static void fe_readdir_fill_up(
   }
 }
 
+static int fe_mkdir(
+  const char *path, 
+  mode_t mode) 
+{
+  fe_data new_dir_info;
+
+  fprintf(stdout, ">> FUNCTION fe_mkdir path='%s'\n", path);
+
+  initstat(&new_dir_info.vstat, S_IFDIR | mode);
+  tree_add(the_fs.root, path, fe_data_to_void_ptr(new_dir_info));
+  
+  return 0;
+}
+
+
 static int fe_readdir(
   const char *path,
   void *buffer,
@@ -210,7 +225,7 @@ static struct fuse_operations ramcloud_fuse_oper = {
   .getattr = fe_getattr,
 //  .readlink = ramcloud_fuse_readlink,
   .mknod = fe_mknod,
-//  .mkdir = ramcloud_fuse_mkdir,
+  .mkdir = fe_mkdir,
 //  .unlink = ramcloud_fuse_unlink,
 //  .rmdir = ramcloud_fuse_rmdir,
 //  .symlink = ramcloud_fuse_symlink,
