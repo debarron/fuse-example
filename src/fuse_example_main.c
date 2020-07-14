@@ -161,6 +161,8 @@ static int fe_readdir(
   tree_t *entry, *parent, *child;
   fe_data entry_data, parent_data, child_data;
   
+  fprintf(stdout, ">> FUNCTION: fe_readdir path='%s'\n", path);
+
   entry = tree_find(the_fs.root, path);
   entry_data = fe_data_from_void_ptr(entry->data);
   if((entry != NULL) || (S_ISREG(entry_data.vstat.st_mode))){
