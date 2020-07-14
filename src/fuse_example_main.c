@@ -149,6 +149,20 @@ static int fe_mknod(
   return 0;
 }
 
+static void fe_readdir_fill_up(
+  tree_t *parent,
+  void *buffer,
+  fuse_fill_dir_t filler)
+{
+  tree_t *child = parent->children;
+  fe_data child_data;
+
+  while(child != NULL){
+    child_data = fe_data_from_void_ptr(child->data);
+    filler(buffer, child->path, &child_data.vstat, 0, 0);
+    child = child->next;
+  }
+}
 
 static int fe_readdir(
   const char *path,
@@ -158,9 +172,10 @@ static int fe_readdir(
   struct fuse_file_info *fi,
   enum fuse_readdir_flags flags)
 {
-  tree_t *entry, *parent, *child;
-  fe_data entry_data, parent_data, child_data;
+  tree_t *entry, *parent;
+  fe_data entry_data, parent_data;
   int entry_exists, entry_is_file;
+  struct stat *parent_vstat;
   
   fprintf(stdout, ">> FUNCTION: fe_readdir path='%s'\n", path);
 
@@ -174,26 +189,18 @@ static int fe_readdir(
     return -errno;
   } 
 
-  fprintf(stdout, "\t>> fe_readdir passed the entry test\n");
-
   filler(buffer, ".",  &entry_data.vstat, 0, 0);
-  if(strcmp(path, THE_ROOT) == 0) filler(buffer, "..", NULL, 0, 0);
+  if(strcmp(path, THE_ROOT) == 0) 
+    parent_vstat = NULL
   else{
     parent = tree_find_parent(the_fs.root, path);
     parent_data = fe_data_from_void_ptr(parent->data);
-    filler(buffer, "..", &parent_data.vstat, 0, 0);
+    parent_vstat = &parent_data.vstat;
   }
-    
-  fprintf(stdout, "\t>> fe_readdir passed the parent test\n");
 
-  // fill_up_children
-  child = entry->children;
-  while(child != NULL){
-    fprintf(stdout, "\t>> fe_readdir looking at %s\n", child->path);
-    child_data = fe_data_from_void_ptr(child->data);
-    filler(buffer, child->path, &child_data.vstat, 0, 0);
-    child = child->next;
-  }
+  fprintf(stdout, "\t>> fe_readdir passed the parent test\n");
+  filler(buffer, "..", parent_vstat, 0, 0);
+  fe_readdir_fill_up(entry, buffer, filler);
 
   return 0;
 }
