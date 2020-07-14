@@ -53,7 +53,6 @@ static int initstat(struct stat *stbuf, mode_t mode) {
   return 1;
 }
 
-
 static void fe_set_file_stat(struct stat *v){
   v->st_mode = S_IFREG | 0444;
   v->st_nlink = 1;
@@ -93,9 +92,6 @@ static int fe_open(
 {
   int status = 0;
   fprintf(stdout, ">> FUNCTION: fe_open, path=%s\n", path);
-
-  // TODO This calls ramcloud read
-
   return status;
 }
 
@@ -109,52 +105,6 @@ static int fe_write(
   ) 
 {
   fprintf(stdout, ">> FUNCTION: fe_write path='%s'\n", path);
-
-
-  /*
-   *
-  struct filehandle *fh = (struct filehandle *) fi->fh;
-
-  // Check whether the file was opened for writing
-  if(!O_WRITE(fh->o_flags)) {
-    return -EACCES;
-  }
-
-  struct node *node = fh->node;
-
-  // Calculate number of required blocks
-  blkcnt_t req_blocks = (offset + size + BLOCKSIZE - 1) / BLOCKSIZE;
-
-  if(node->vstat.st_blocks < req_blocks) {
-    // Allocate more memory
-    void *newdata = malloc(req_blocks * BLOCKSIZE);
-    if(!newdata) {
-      return -ENOMEM;
-    }
-
-    // Copy old contents
-    if(node->data != NULL) {
-      memcpy(newdata, node->data, node->vstat.st_size);
-      free(node->data);
-    }
-
-    // Update allocation information
-    node->data = newdata;
-    node->vstat.st_blocks = req_blocks;
-  }
-
-  // Write to file buffer
-  memcpy(((char *) node->data) + offset, buf, size);
-
-  // Update file size if necessary
-  off_t minsize = offset + size;
-  if(minsize > node->vstat.st_size) {
-    node->vstat.st_size = minsize;
-  }
-
-  update_times(node, U_CTIME | U_MTIME);
-
-  */
   return size;
 }
 
@@ -168,9 +118,6 @@ static int fe_read(
 {
   int status = 0;
   fprintf(stdout, "NF >> READ path: %s\n", path);
-
-  // TODO This calls ramcloud read
-
   return status;
 }
 
@@ -207,7 +154,7 @@ static int fe_readdir(
   entry_exists = (entry != NULL) ? 1 : 0;
   entry_is_file = (S_ISREG(entry_data.vstat.st_mode)) ? 1 : 0;
 
-  if (!entry_exists || entry_is_file)
+  if (!entry_exists || entry_is_file){
     errno = ENOENT;
     return -errno;
   } 
