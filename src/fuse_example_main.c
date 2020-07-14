@@ -79,6 +79,7 @@ static int fe_getattr(
     return -errno;
   }
 
+  fprintf(stdout, "\t >> getattr found path='%s'\n", entry->path);
   entry_info = fe_data_from_void_ptr(entry->data);
   stbuf->st_mode   = entry_info.vstat.st_mode;
   stbuf->st_nlink  = entry_info.vstat.st_nlink;
