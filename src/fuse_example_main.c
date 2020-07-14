@@ -155,19 +155,19 @@ static int fe_readdir(
     return -errno;
   } 
 
-  filler(buffer, ".",  &entry_data.vstat, 0);
-  if(strcmp(path, THE_ROOT) == 0) filler(buff, "..", NULL, 0);
+  filler(buffer, ".",  &entry_data.vstat, 0, 0);
+  if(strcmp(path, THE_ROOT) == 0) filler(buff, "..", NULL, 0, 0);
   else{
     parent = tree_find_parent(the_fs.root, path);
     parent_data = fe_data_from_void_ptr(parent->data);
-    filler(buffer, "..", &parent_data.vstata, 0);
+    filler(buffer, "..", &parent_data.vstata, 0, 0);
   }
     
   // fill_up_children
   child = entry->children;
   while(child != NULL){
     child_data = fe_data_from_void_ptr(child->data);
-    if(filler(buffer, child->path, &child_data.vstat, 0))
+    if(filler(buffer, child->path, &child_data.vstat, 0, 0))
       break;
 
     child = child->next;
