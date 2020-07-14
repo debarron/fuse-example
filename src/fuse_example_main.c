@@ -168,7 +168,7 @@ static int fe_readdir(
   while(child != NULL){
     fprintf(stdout, "\t>> fe_readdir looking at %s\n", child->path);
     child_data = fe_data_from_void_ptr(child->data);
-    filler(buffer, child->path, &child_data.vstat, 0, 0)
+    filler(buffer, child->path, &child_data.vstat, 0, 0);
     child = child->next;
   }
 
