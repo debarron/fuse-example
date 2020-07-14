@@ -165,10 +165,30 @@ static int fe_read(
   return status;
 }
 
+static int fe_mknod(const char *path, mode_t mode, dev_t rdev) {
+  fprintf(stdout, ">> FUNCTION mknod path='%s'\n", path);
+/* 
+  struct node *node;
+  int res = createentry(path, mode, &node);
+  if(res) return res;
+
+  if(S_ISREG(mode)) {
+    node->data = NULL;
+    node->vstat.st_blocks = 0;
+  } else {
+    return -ENOSYS;
+  }
+  */
+
+  return 0;
+}
+
+
+
 static struct fuse_operations ramcloud_fuse_oper = {
   .getattr = fe_getattr,
 //  .readlink = ramcloud_fuse_readlink,
-//  .mknod = ramcloud_fuse_mknod,
+  .mknod = fe_mknod,
 //  .mkdir = ramcloud_fuse_mkdir,
 //  .unlink = ramcloud_fuse_unlink,
 //  .rmdir = ramcloud_fuse_rmdir,
