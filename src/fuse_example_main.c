@@ -216,7 +216,7 @@ static int fe_readdir(
     return -errno;
   } 
 
-  if (fe_entry_is_file(path))
+  if (fe_entry_is_file(path) != 0)
     return -ENOTDIR;
 
   entry = tree_find(the_fs.root, path);
