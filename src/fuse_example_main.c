@@ -189,22 +189,6 @@ static int fe_mknod(
   return 0;
 }
 
-static int fe_entry_exists(const char *path){
-  if (tree_find(the_fs.root, path) != NULL) 
-    return 1;
-  else 
-    return 0; 
-}
-
-static int fe_entry_is_file(const char *path){
-  tree_t *entry = tree_find(the_fs.root, path);
-  fe_data entry_data = fe_data_from_void_ptr(entry->data);
-
-  if (S_ISREG(entry_data.vstat.st_mode)) 
-    return 1;
-  else
-    return 0;
-}
 
 static int fe_readdir(
   const char *path,
@@ -216,19 +200,21 @@ static int fe_readdir(
 {
   tree_t *entry, *parent, *child;
   fe_data entry_data, parent_data, child_data;
-
-  if (!fe_entry_exists(path))
-    errno = ENOENT;
-    return -errno;
-  } else if (fe_entry_is_file(path)){
-    return -ENOTDIR;
-  }
-
+  int entry_exists, entry_is_file;
+  
   entry = tree_find(the_fs.root, path);
   entry_data = fe_data_from_void_ptr(entry->data);
-  filler(buffer, ".",  &entry_data.vstat, 0);
+  entry_exists = (entry != NULL) ? 1 : 0;
+  entry_is_file = (S_ISREG(entry_data.vstat.st_mode)) ? 1 : 0;
+
+  if (!entry_exists)
+    errno = ENOENT;
+    return -errno;
+  } else if (entry_is_file)
+    return -ENOTDIR;
   
-  // fill_up_parent
+
+  filler(buffer, ".",  &entry_data.vstat, 0);
   if(strcmp(path, THE_ROOT) == 0) filler(buff, "..", NULL, 0);
   else{
     parent = tree_find_parent(the_fs.root, path);
