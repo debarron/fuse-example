@@ -36,8 +36,6 @@ struct filehandle {
 
 struct filesystem the_fs;
 
-
-
 void fe_init(
   struct fuse_conn_info *conn,
   struct fuse_config *config)
@@ -93,7 +91,7 @@ static int fe_open(
   struct fuse_file_info *fi)
 {
   int status = 0;
-  fprintf(stdout, ">> OPEN Opening a file, path=%s\n", path);
+  fprintf(stdout, ">> FUNCTION: fe_open, path=%s\n", path);
 
   // TODO This calls ramcloud read
 
@@ -109,7 +107,9 @@ static int fe_write(
   struct fuse_file_info *fi
   ) 
 {
-  fprintf(stdout, ">> FUNCTION fe_write path='%s'\n", path);
+  fprintf(stdout, ">> FUNCTION: fe_write path='%s'\n", path);
+
+
   /*
    *
   struct filehandle *fh = (struct filehandle *) fi->fh;
@@ -184,21 +184,7 @@ static int fe_mknod(
 
   initstat(&new_entry.vstat, mode);
   tree_add(the_fs.root, path, fe_data_to_void_ptr(new_entry));
-
   
-/* 
-  struct node *node;
-  int res = createentry(path, mode, &node);
-  if(res) return res;
-
-  if(S_ISREG(mode)) {
-    node->data = NULL;
-    node->vstat.st_blocks = 0;
-  } else {
-    return -ENOSYS;
-  }
-  */
-
   return 0;
 }
 
