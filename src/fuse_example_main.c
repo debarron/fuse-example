@@ -198,7 +198,6 @@ static int initstat(struct stat *stbuf, mode_t mode) {
   memset(stbuf, 0, sizeof(struct stat));
   stbuf->st_mode  = mode;
   stbuf->st_nlink = 0;
-  update_times(node, U_ATIME | U_MTIME | U_CTIME);
   return 1;
 }
 
@@ -220,7 +219,7 @@ void init(){
 int main(int argc, char **argv){
   int fuse_stat;
 
-
+  init();
   return fuse_main(argc, argv, &ramcloud_fuse_oper, NULL);
 }
 
