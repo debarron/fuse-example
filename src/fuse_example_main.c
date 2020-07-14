@@ -165,8 +165,19 @@ static int fe_read(
   return status;
 }
 
-static int fe_mknod(const char *path, mode_t mode, dev_t rdev) {
-  fprintf(stdout, ">> FUNCTION mknod path='%s'\n", path);
+static int fe_mknod(
+    const char *path, 
+    mode_t mode, 
+    dev_t rdev) 
+{
+  fe_data new_entry;
+
+  fprintf(stdout, ">> FUNCTION fe_mknod path='%s'\n", path);
+
+  initstat(&new_entry.vstat, mode);
+  tree_add(the_fs.root, path, fe_data_to_void_ptr(new_entry));
+
+  
 /* 
   struct node *node;
   int res = createentry(path, mode, &node);
