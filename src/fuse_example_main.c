@@ -194,11 +194,32 @@ static struct fuse_operations ramcloud_fuse_oper = {
 //  .create = ramcloud_fuse_create,
 };
 
+static int initstat(struct stat *stbuf, mode_t mode) {
+  memset(stbuf, 0, sizeof(struct stat));
+  stbuf->st_mode  = mode;
+  stbuf->st_nlink = 0;
+  update_times(node, U_ATIME | U_MTIME | U_CTIME);
+  return 1;
+}
+
+
+void init(){
+  tree_t *root;
+  fe_data root_data;
+
+  root_data.size = 1L;
+  root_data.table_id = 1L;
+  initstat(&root_data.vstat, S_IFDIR | 0755);
+
+  root = tree_init();
+  root->data = fe_data_to_void_ptr(root_data);
+
+  the_fs.root = root;
+}
+
 int main(int argc, char **argv){
   int fuse_stat;
 
-  tree_t *root = tree_init();
-  the_fs.root = root;
 
   return fuse_main(argc, argv, &ramcloud_fuse_oper, NULL);
 }
