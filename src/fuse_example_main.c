@@ -79,9 +79,21 @@ static int fe_getattr(
     return -errno;
   }
 
-  memset(stbuf, 0, sizeof(struct stat));
   entry_info = fe_data_from_void_ptr(entry->data);
-  memcpy(stbuf, &entry_info.vstat, sizeof(struct stat));
+  stbuf->st_mode   = entry_info.vstat.st_mode;
+  stbuf->st_nlink  = entry_info.vstat.st_nlink;
+  stbuf->st_size   = entry_info.vstat.st_size;
+  stbuf->st_blocks = entry_info.vstat.st_blocks;
+  stbuf->st_uid    = entry_info.vstat.st_uid;
+  stbuf->st_gid    = entry_info.vstat.st_gid;
+  stbuf->st_mtime  = entry_info.vstat.st_mtime;
+  stbuf->st_atime  = entry_info.vstat.st_atime;
+  stbuf->st_ctime  = entry_info.vstat.st_ctime;
+
+  // Directories contain the implicit hardlink '.'
+  if(S_ISDIR(entry_info.vstat.st_mode)) {
+    stbuf->st_nlink++;
+  }
 
   return 0;
 }
