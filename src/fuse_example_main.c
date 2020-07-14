@@ -147,14 +147,10 @@ static int fe_readdir(
 {
   tree_t *entry, *parent, *child;
   fe_data entry_data, parent_data, child_data;
-  int entry_exists, entry_is_file;
   
   entry = tree_find(the_fs.root, path);
   entry_data = fe_data_from_void_ptr(entry->data);
-  entry_exists = (entry != NULL) ? 1 : 0;
-  entry_is_file = (S_ISREG(entry_data.vstat.st_mode)) ? 1 : 0;
-
-  if (!entry_exists || entry_is_file){
+  if((entry != NULL) || (S_ISREG(entry_data.vstat.st_mode))){
     errno = ENOENT;
     return -errno;
   } 
