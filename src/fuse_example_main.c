@@ -207,12 +207,10 @@ static int fe_readdir(
   entry_exists = (entry != NULL) ? 1 : 0;
   entry_is_file = (S_ISREG(entry_data.vstat.st_mode)) ? 1 : 0;
 
-  if (!entry_exists)
+  if (!entry_exists || entry_is_file)
     errno = ENOENT;
     return -errno;
-  } else if (entry_is_file)
-    return -ENOTDIR;
-  
+  } 
 
   filler(buffer, ".",  &entry_data.vstat, 0);
   if(strcmp(path, THE_ROOT) == 0) filler(buff, "..", NULL, 0);
@@ -258,7 +256,7 @@ static struct fuse_operations ramcloud_fuse_oper = {
 //  .release = ramcloud_fuse_release,
 //  .fsync = ramcloud_fuse_fsync,
 //  .opendir = fe_opendir,
-  .readdir = fe_readdir
+  .readdir = fe_readdir,
 //  .releasedir = ramcloud_fuse_releasedir,
 //  .fsyncdir = ramcloud_fuse_fsyncdir,
 //  .init = ramcloud_fuse_init,
