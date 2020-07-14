@@ -211,12 +211,12 @@ static int fe_readdir(
   tree_t *entry, *parent, *child;
   fe_data entry_data, parent_data, child_data;
 
-  if(!fe_entry_exists(path))
+  if (!fe_entry_exists(path))
     errno = ENOENT;
     return -errno;
   } 
 
-  if(fe_entry_is_file(path))
+  if (fe_entry_is_file(path))
     return -ENOTDIR;
 
   entry = tree_find(the_fs.root, path);
