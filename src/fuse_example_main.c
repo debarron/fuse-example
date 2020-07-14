@@ -24,6 +24,7 @@
 #include "fe_data.h"
 
 #define FE_FILE_SIZE 1048576
+#define THE_ROOT "/"
 
 struct filesystem {
   tree_t *root;
@@ -188,6 +189,62 @@ static int fe_mknod(
   return 0;
 }
 
+static int fe_entry_exists(const char *path){
+  if (tree_find(the_fs.root, path) != NULL) return 1;
+  else return 0; 
+}
+
+static int fe_entry_is_file(const char *path){
+  tree_t *entry = tree_find(the_fs.root, path);
+  fe_data entry_data = fe_data_from_void_ptr(entry->data);
+
+  return S_ISREG(entry_data.vstat);
+}
+
+
+static int fe_readdir(
+  const char *path,
+  void *buffer,
+  fuse_fill_dir_t filler,
+  off_t offset,
+  struct fuse_file_info *fi,
+  enum fuse_readdir_flags flags)
+{
+  tree_t *entry, *parent, *child;
+  fe_data entry_data, parent_data, child_data;
+
+  if(!fe_entry_exists(path))
+    errno = ENOENT;
+    return -errno;
+  } 
+
+  if(fe_entry_is_file(path))
+    return -ENOTDIR;
+
+  entry = tree_find(the_fs.root, path);
+  entry_data = fe_data_from_void_ptr(entry->data);
+  filler(buffer, ".",  &entry_data.vstat, 0);
+  
+  // fill_up_parent
+  if(strcmp(path, THE_ROOT) == 0) filler(buff, "..", NULL, 0);
+  else{
+    parent = tree_find_parent(the_fs.root, path);
+    parent_data = fe_data_from_void_ptr(parent->data);
+    filler(buffer, "..", &parent_data.vstata, 0);
+  }
+    
+  // fill_up_children
+  child = entry->children;
+  while(child != NULL){
+    child_data = fe_data_from_void_ptr(child->data);
+    if(filler(buffer, child->path, &child_data.vstat, 0))
+      break;
+
+    child = child->next;
+  }
+
+  return 0;
+}
 
 
 static struct fuse_operations ramcloud_fuse_oper = {
@@ -211,8 +268,8 @@ static struct fuse_operations ramcloud_fuse_oper = {
 //  .flush = ramcloud_fuse_flush,
 //  .release = ramcloud_fuse_release,
 //  .fsync = ramcloud_fuse_fsync,
-//  .opendir = nf_opendir,
-//  .readdir = nf_readdir
+  .opendir = nf_opendir,
+  .readdir = nf_readdir
 //  .releasedir = ramcloud_fuse_releasedir,
 //  .fsyncdir = ramcloud_fuse_fsyncdir,
 //  .init = ramcloud_fuse_init,
