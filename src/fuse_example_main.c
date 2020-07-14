@@ -65,7 +65,7 @@ static int fe_getattr(
   tree_t *entry;
   fe_data entry_info;
 
-  fprintf(stdout, "Enter the function fe_getattr path='%s'\n", path);
+  fprintf(stdout, ">> FUNCTION: fe_getattr path='%s'\n", path);
 
   entry = tree_find(the_fs.root, path);
   if(entry == NULL){
@@ -101,7 +101,9 @@ static int fe_write(
   struct fuse_file_info *fi
   ) 
 {
+  fprintf(stdout, ">> FUNCTION fe_write path='%s'\n", path);
   /*
+   *
   struct filehandle *fh = (struct filehandle *) fi->fh;
 
   // Check whether the file was opened for writing
