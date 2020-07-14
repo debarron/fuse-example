@@ -47,6 +47,14 @@ void fe_init(
   return NULL;
 }
 
+static int initstat(struct stat *stbuf, mode_t mode) {
+  memset(stbuf, 0, sizeof(struct stat));
+  stbuf->st_mode  = mode;
+  stbuf->st_nlink = 0;
+  return 1;
+}
+
+
 static void fe_set_file_stat(struct stat *v){
   v->st_mode = S_IFREG | 0444;
   v->st_nlink = 1;
@@ -226,14 +234,6 @@ static struct fuse_operations ramcloud_fuse_oper = {
 //  .access = ramcloud_fuse_access,
 //  .create = ramcloud_fuse_create,
 };
-
-static int initstat(struct stat *stbuf, mode_t mode) {
-  memset(stbuf, 0, sizeof(struct stat));
-  stbuf->st_mode  = mode;
-  stbuf->st_nlink = 0;
-  return 1;
-}
-
 
 static void the_fs_init(){
   tree_t *root;
