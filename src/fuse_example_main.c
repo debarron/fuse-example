@@ -235,7 +235,7 @@ static int initstat(struct stat *stbuf, mode_t mode) {
 }
 
 
-static void init(){
+static void the_fs_init(){
   tree_t *root;
   fe_data root_data;
 
@@ -252,7 +252,7 @@ static void init(){
 int main(int argc, char **argv){
   int fuse_stat;
 
-  init();
+  the_fs_init();
   return fuse_main(argc, argv, &ramcloud_fuse_oper, NULL);
 }
 
