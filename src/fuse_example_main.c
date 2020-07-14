@@ -165,7 +165,7 @@ static int fe_readdir(
 
   entry = tree_find(the_fs.root, path);
   entry_data = fe_data_from_void_ptr(entry->data);
-  if((entry != NULL) || (S_ISREG(entry_data.vstat.st_mode))){
+  if((entry == NULL) || (S_ISREG(entry_data.vstat.st_mode))){
     errno = ENOENT;
     return -errno;
   } 
