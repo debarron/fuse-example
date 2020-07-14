@@ -235,7 +235,7 @@ static int initstat(struct stat *stbuf, mode_t mode) {
 }
 
 
-void init(){
+static void init(){
   tree_t *root;
   fe_data root_data;
 
