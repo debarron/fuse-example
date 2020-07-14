@@ -170,6 +170,8 @@ static int fe_readdir(
     return -errno;
   } 
 
+  fprintf(stdout, "\t>> fe_readdir passed the entry test\n");
+
   filler(buffer, ".",  &entry_data.vstat, 0, 0);
   if(strcmp(path, THE_ROOT) == 0) filler(buffer, "..", NULL, 0, 0);
   else{
@@ -178,6 +180,8 @@ static int fe_readdir(
     filler(buffer, "..", &parent_data.vstat, 0, 0);
   }
     
+  fprintf(stdout, "\t>> fe_readdir passed the parent test\n");
+
   // fill_up_children
   child = entry->children;
   while(child != NULL){
