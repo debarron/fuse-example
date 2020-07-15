@@ -173,7 +173,7 @@ static int fe_read(
       entry_data.content, entry_data.content_size);
 
   // Calculate number of bytes to copy
-  size_t avail = entry_data.vsat.st_size - offset;
+  size_t avail = entry_data.vstat.st_size - offset;
   size_t n = (size < avail) ? size : avail;
   memcpy(buf, entry_data.content + offset, n);
 
