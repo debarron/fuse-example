@@ -156,6 +156,7 @@ static int fe_read(
   void *old_entry_data;
   
   fprintf(stdout, ">> FUNCTION: fe_read path='%s'\n", path);
+  fprintf(stdout, "\t>> fe_read size='%d' offset='%d'\n", size, offset);
 
   entry = tree_find(the_fs.root, path);
   entry_data = fe_data_from_void_ptr(entry->data);
