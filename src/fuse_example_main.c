@@ -139,6 +139,7 @@ static int fe_write(
   old_entry_data = entry->data;
   entry_data.content_size = new_data_lenght;
   entry_data.content = (char *) new_data;
+  entry_data.vstat.st_size = size;
   entry->data = fe_data_to_void_ptr(entry_data);
 
   free(old_entry_data);
@@ -172,7 +173,7 @@ static int fe_read(
       entry_data.content, entry_data.content_size);
 
   // Calculate number of bytes to copy
-  size_t avail = entry_data.content_size - offset;
+  size_t avail = entry_data.vsat.st_size - offset;
   size_t n = (size < avail) ? size : avail;
   memcpy(buf, entry_data.content + offset, n);
 
@@ -189,6 +190,7 @@ static int fe_mknod(
   fprintf(stdout, ">> FUNCTION fe_mknod path='%s'\n", path);
 
   new_entry.content_size = 0;
+  new_entry.vstat.st_size = 0;
   new_entry.content = NULL;
   initstat(&new_entry.vstat, mode);
   tree_add(the_fs.root, path, fe_data_to_void_ptr(new_entry));
