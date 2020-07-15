@@ -124,6 +124,8 @@ static int fe_write(
   int new_data_lenght;
 
   fprintf(stdout, ">> FUNCTION: fe_write path='%s'\n", path);
+  fprintf(stdout, "\t>> fe_write buf='%s'\n", buf);
+
   new_data_lenght = offset + size;
   new_data = malloc(new_data_lenght);
   memset(new_data, 0, new_data_lenght);
@@ -156,7 +158,6 @@ static int fe_read(
   void *old_entry_data;
   
   fprintf(stdout, ">> FUNCTION: fe_read path='%s'\n", path);
-  fprintf(stdout, "\t>> fe_read size='%d' offset='%d'\n", size, offset);
 
   entry = tree_find(the_fs.root, path);
   entry_data = fe_data_from_void_ptr(entry->data);
@@ -165,6 +166,10 @@ static int fe_read(
   int entry_not_exists = (entry == NULL) ? 1 : 0;
 
   if(has_reach_end || entry_not_exists) return 0;
+
+  fprintf(stdout, "\t>> fe_read size='%d' offset='%d'\n", size, offset);
+  fprintf(stdout, "\t>> fe_read content='%s' content_size='%d'\n", 
+      entry_data.content, entry_data.content_size);
 
   // Calculate number of bytes to copy
   size_t avail = entry_data.content_size - offset;
