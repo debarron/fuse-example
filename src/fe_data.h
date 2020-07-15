@@ -26,9 +26,11 @@
 #include <sys/stat.h>
 
 typedef struct{
-  long size;
-  struct stat vstat;
+  size_t size;
   long table_id;
+  struct stat vstat;
+  size_t content_size;
+  char *content;
 }fe_data;
 
 fe_data fe_data_from_void_ptr(void *p);

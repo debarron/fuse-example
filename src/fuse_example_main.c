@@ -117,7 +117,25 @@ static int fe_write(
   struct fuse_file_info *fi
   ) 
 {
+  tree_t *entry;
+  fe_data entry_data;
+  void *old_entry_data;
+
   fprintf(stdout, ">> FUNCTION: fe_write path='%s'\n", path);
+  entry = tree_find(the_fs.root, path);
+  entry_data = fe_data_to_void_ptr(entry->data);
+
+  if (entry_data.content_size < size){
+    free(entry_data.content);
+    entry_data.content_size = size;
+    entry_data.content = (char *) malloc(sizeof(char) * size);
+  }
+
+  memcpy(entry_data.content, &buf[offset], size);
+  old_entry_data = entry_data;
+  entry->data = fe_data_to_void_ptr(entry_data);
+  free(old_entry_data);
+  
   return size;
 }
 
@@ -129,9 +147,26 @@ static int fe_read(
   off_t offset,
   struct fuse_file_info *fi)
 {
-  int status = 0;
-  fprintf(stdout, "NF >> READ path: %s\n", path);
-  return status;
+  tree_t *entry;
+  fe_data entry_data;
+  void *old_entry_data;
+  
+  fprintf(stdout, ">> FUNCTION: fe_read path='%s'\n", path);
+
+  entry = tree_find(the_fs.root, path);
+  entry_data = fe_data_from_void_ptr(entry->data);
+
+  int has_reach_end = (offset >= size) ? 1 : 0;
+  int entry_not_exists = (entry == NULL) ? 1 : 0;
+
+  if(has_reach_end || entry_not_exists) return 0;
+
+  // Calculate number of bytes to copy
+  size_t avail = entry_data.content_size - offset;
+  size_t n = (size < avail) ? size : avail;
+  memcpy(buf, entry_data.content + offset, n);
+
+  return n;
 }
 
 static int fe_mknod(
