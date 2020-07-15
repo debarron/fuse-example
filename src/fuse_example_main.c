@@ -178,6 +178,8 @@ static int fe_mknod(
 
   fprintf(stdout, ">> FUNCTION fe_mknod path='%s'\n", path);
 
+  new_entry.content_size = 0;
+  new_entry.content = NULL;
   initstat(&new_entry.vstat, mode);
   tree_add(the_fs.root, path, fe_data_to_void_ptr(new_entry));
   
@@ -207,6 +209,8 @@ static int fe_mkdir(
 
   fprintf(stdout, ">> FUNCTION fe_mkdir path='%s'\n", path);
 
+  new_dir.content_size = 0;
+  new_dir.content = NULL;
   initstat(&new_dir_info.vstat, S_IFDIR | mode);
   tree_add(the_fs.root, path, fe_data_to_void_ptr(new_dir_info));
   

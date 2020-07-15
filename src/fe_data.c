@@ -22,12 +22,16 @@ fe_data fe_data_from_void_ptr(void *p){
   fe_data entry;
   char *buffer_wrapper;
  
+  entry.content = NULL;
   buffer_wrapper = (char *) p;
   memcpy(&entry, buffer_wrapper, sizeof(fe_data));
-  entry.content = (char *) malloc(sizeof(char) * entry.content_size);
+  
+  if(entry.content_size > 0){
+    entry.content = (char *) malloc(sizeof(char) * entry.content_size);
+    memset(entry.content, 0, sizeof(char) * entry.content_size);
+    memcpy(entry.content, &buffer_wrapper[sizeof(fe_data)], entry.content_size);
+  }
 
-  memset(entry.content, 0, sizeof(char) * entry.content_size);
-  memcpy(entry.content, &buffer_wrapper[sizeof(fe_data)], entry.content_size);
   return entry;
 }
 
@@ -40,7 +44,7 @@ void *fe_data_to_void_ptr(fe_data d){
 
   memset(buffer_wrapper, 0, sizeof(fe_data) + d.content_size);
   memcpy(buffer_wrapper, &d, sizeof(fe_data));
-  memcpy(&buffer_wrapper[sizeof(fe_data)], d.content, d.content_size);
+  if(d.content_size > 0) memcpy(&buffer_wrapper[sizeof(fe_data)], d.content, d.content_size);
 
   return buffer;
 }
