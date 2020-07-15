@@ -123,7 +123,7 @@ static int fe_write(
 
   fprintf(stdout, ">> FUNCTION: fe_write path='%s'\n", path);
   entry = tree_find(the_fs.root, path);
-  entry_data = fe_data_to_void_ptr(entry->data);
+  entry_data = fe_data_from_void_ptr(entry->data);
 
   if (entry_data.content_size < size){
     free(entry_data.content);
@@ -132,7 +132,7 @@ static int fe_write(
   }
 
   memcpy(entry_data.content, &buf[offset], size);
-  old_entry_data = entry_data;
+  old_entry_data = entry->data;
   entry->data = fe_data_to_void_ptr(entry_data);
   free(old_entry_data);
   
