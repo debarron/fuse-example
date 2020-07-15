@@ -120,22 +120,26 @@ static int fe_write(
   tree_t *entry;
   fe_data entry_data;
   void *old_entry_data;
+  void *new_data;
+  int new_data_lenght;
 
   fprintf(stdout, ">> FUNCTION: fe_write path='%s'\n", path);
+  new_data_lenght = offset + size;
+  new_data = malloc(new_data_lenght);
+  memset(new_data, 0, new_data_lenght);
+
   entry = tree_find(the_fs.root, path);
   entry_data = fe_data_from_void_ptr(entry->data);
+  if(entry_data.content_size > 0)
+    memcpy(new_data, entry_data.content, entry_data.content_size);
 
-  if (entry_data.content_size < size){
-    free(entry_data.content);
-    entry_data.content_size = size;
-    entry_data.content = (char *) malloc(sizeof(char) * size);
-  }
-
-  memcpy(entry_data.content, &buf[offset], size);
+  memcpy(((char *)new_data) + offset, buf, size);
   old_entry_data = entry->data;
+  entry_data.content_size = new_data_lenght;
+  entry_data.content = (char *) new_data;
   entry->data = fe_data_to_void_ptr(entry_data);
+
   free(old_entry_data);
-  
   return size;
 }
 
