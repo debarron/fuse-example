@@ -24,7 +24,9 @@ Access the $MOUNTING\_POINT as it was any other type of directory.
 
 ## The sweet end
 After you are done, you can press Ctrl-C to stop execution, or
-from another terminal run: `sudo umount $MOUNTING\_POINT`.
+from another terminal run: 
+
+`sudo umount $MOUNTING_POINT`
 
 ## References and acknowledgments
 * [libfuse](https://github.com/libfuse/libfuse)
