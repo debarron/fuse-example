@@ -31,5 +31,5 @@ from another terminal run: `sudo umount $MOUNTING\_POINT`.
 * [libfuse](https://github.com/libfuse/libfuse)
 * [memfs-fuse](https://github.com/tniessen/memfs-fuse)
 * [stat man page](https://man7.org/linux/man-pages/man2/stat.2.html)
-
+* [Writing a FUSE filesystem: a tutorial](https://www.cs.nmsu.edu/~pfeiffer/fuse-tutorial/)
 
